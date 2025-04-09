@@ -6,6 +6,6 @@ public class GameManager : MonoBehaviour
 {
     public void ToMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

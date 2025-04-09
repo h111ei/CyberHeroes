@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 22dae275903cf3e4d9830ecf4948aaf8
+guid: fce30c8dbc928164ebb382f0e8f6152e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,7 +136,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BUBBLE_0
+      name: BubblePurple_0
       rect:
         serializedVersion: 2
         x: 46
@@ -150,8 +150,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 13f648d4a0d6a154e927895ea26bcfb4
-      internalID: -27288261
+      spriteID: 89fd5e7e03b49124c8600745dd3c7100
+      internalID: 1486348233
       vertices: []
       indices: 
       edges: []
@@ -167,7 +167,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      BUBBLE_0: -27288261
+      BubblePurple_0: 1486348233
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

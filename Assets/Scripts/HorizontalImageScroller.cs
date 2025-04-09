@@ -3,100 +3,207 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DanielLochner.Assets.SimpleScrollSnap;
+using System.Linq;
+using TMPro;
 
 public class HorizontalImageScroller : MonoBehaviour
 {
-    public ScrollRect scrollRect;
-    public float snapSpeed = 10f;
-    public float threshold = 0.01f;
-
-    private RectTransform contentPanel;
-    private GameObject[] children;
-    private int selectedIndex = 0;
-
-    private void Start()
+    [System.Serializable]
+    public class FileData
     {
-        contentPanel = scrollRect.content;
-        UpdateChildren();
-
-        // Выбираем первый элемент по умолчанию
-        if (children.Length > 0)
-            SelectChild(selectedIndex);
+        public Sprite image;
+        [TextArea(3, 5)] public string text;
+        public bool shouldBeDeleted;
     }
 
-    private void Update()
-    {
-        // Обработка клавиш A/D
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            MoveToNext();
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            MoveToPrevious();
-        }
+    public SimpleScrollSnap scrollSnap;
+    public Button deleteButton;
+    public float deleteAnimationDuration = 0.5f;
+    public GameObject panelPrefab; // Префаб панели с Image и дочерним TextMeshProUGUI
+    public FileData[] filesData;
 
-        // Плавное перемещение к выбранному элементу
-        SnapToSelected();
+    private bool isDeleting = false;
+    private int correctDeletions = 0;
+    private int incorrectDeletions = 0;
+    private Coroutine currentDeletionCoroutine;
+
+    public GameObject ErrorPanel;
+    public GameObject WinPanel;
+    public Intro Sequence;
+    void Start()
+    {
+        InitializeScrollSnap();
+        deleteButton.onClick.AddListener(DeleteCurrentFile);
     }
 
-    private void UpdateChildren()
+    void InitializeScrollSnap()
     {
-        children = new GameObject[contentPanel.childCount];
-        for (int i = 0; i < contentPanel.childCount; i++)
+        // Очистка существующих элементов
+        foreach (Transform child in scrollSnap.Content)
         {
-            children[i] = contentPanel.GetChild(i).gameObject;
+            Destroy(child.gameObject);
         }
+
+        // Создание новых элементов из префаба
+        foreach (var file in filesData)
+        {
+            CreateFileElement(file);
+        }
+
+        scrollSnap.Setup();
     }
 
-    private void MoveToNext()
+
+    GameObject CreateFileElement(FileData file)
     {
-        if (selectedIndex < children.Length - 1)
+        if (panelPrefab == null)
         {
-            selectedIndex++;
-            SelectChild(selectedIndex);
+            Debug.LogError("Panel prefab is not assigned!");
+            return null;
         }
+
+        // Создаем экземпляр префаба
+        GameObject fileObject = Instantiate(panelPrefab, scrollSnap.Content);
+        fileObject.name = "File";
+
+        // Настройка Image
+        Image img = fileObject.GetComponentInChildren<Image>();
+
+        if (img != null)
+        {
+            img.sprite = file.image;
+            img.preserveAspect = true;
+            img.color = Color.white;
+        }
+
+        // Находим TextMeshProUGUI в дочерних объектах
+        TextMeshProUGUI tmpText = fileObject.GetComponentInChildren<TextMeshProUGUI>();
+        if (tmpText != null)
+        {
+            tmpText.text = file.text;
+            tmpText.color = Color.black;
+            tmpText.fontSize = 24;
+            tmpText.alignment = TextAlignmentOptions.Center;
+            tmpText.enableWordWrapping = true;
+        }
+
+        // Настройка RectTransform (если нужно)
+        RectTransform rt = fileObject.GetComponent<RectTransform>();
+        if (rt != null)
+        {
+            rt.sizeDelta = new Vector2(300, 400);
+        }
+
+        return fileObject;
     }
 
-    private void MoveToPrevious()
+    public void DeleteCurrentFile()
     {
-        if (selectedIndex > 0)
+        if (isDeleting || scrollSnap.Panels.Length == 0) return;
+
+        int currentIndex = scrollSnap.CenteredPanel;
+        if (currentIndex < 0 || currentIndex >= scrollSnap.Panels.Length) return;
+
+        RectTransform fileToDelete = scrollSnap.Panels[currentIndex];
+        FileData currentFileData = filesData[currentIndex];
+
+        bool shouldDelete = CheckForKeywords(currentFileData.text);
+
+        if (shouldDelete == currentFileData.shouldBeDeleted)
         {
-            selectedIndex--;
-            SelectChild(selectedIndex);
+            incorrectDeletions++;
+            Debug.Log("Ошибка! Неправильное удаление. Ошибок: " + incorrectDeletions);
+            ErrorPanel.gameObject.SetActive(true);
+
         }
+        else if (shouldDelete)
+        {
+            correctDeletions++;
+        }
+
+        if (currentDeletionCoroutine != null)
+        {
+            StopCoroutine(currentDeletionCoroutine);
+        }
+        currentDeletionCoroutine = StartCoroutine(DeleteWithAnimation(fileToDelete, currentIndex, shouldDelete));
     }
 
-    private void SelectChild(int index)
+
+    //исправить в будущем
+    public void CloseErrorPanel()
     {
-        selectedIndex = Mathf.Clamp(index, 0, children.Length - 1);
-        // Можно добавить визуальное выделение, например, изменить цвет
+        ErrorPanel.gameObject.SetActive(false);
     }
 
-    private void SnapToSelected()
+    public void PlaySequence()
     {
-        if (children == null || children.Length == 0) return;
+        Sequence.PlaySequence("Ending");
+    }
 
-        // Получаем позицию выбранного ребенка относительно Content
-        RectTransform selectedChild = children[selectedIndex].GetComponent<RectTransform>();
-        Vector2 contentPos = (Vector2)scrollRect.transform.InverseTransformPoint(contentPanel.position);
-        Vector2 childPos = (Vector2)scrollRect.transform.InverseTransformPoint(selectedChild.position);
-        Vector2 targetPos = contentPos - childPos;
+    bool CheckForKeywords(string text)
+    {
+        string[] keywords = { "вирус", "malware", "троян", "опасно", "удалить" };
+        return keywords.Any(keyword => text.ToLower().Contains(keyword.ToLower()));
+    }
 
-        // Центрируем только по горизонтали
-        targetPos.y = contentPanel.anchoredPosition.y;
+    private IEnumerator DeleteWithAnimation(RectTransform fileToDelete, int index, bool correctDeletion)
+    {
+        isDeleting = true;
 
-        // Плавное перемещение
-        contentPanel.anchoredPosition = Vector2.Lerp(
-            contentPanel.anchoredPosition,
-            targetPos,
-            snapSpeed * Time.deltaTime
-        );
+        // Сохраняем ссылки на компоненты перед анимацией
+        TextMeshProUGUI tmpText = fileToDelete.GetComponentInChildren<TextMeshProUGUI>();
+        string originalText = tmpText != null ? tmpText.text : "";
 
-        // Если очень близко, то "защелкиваемся"
-        if (Vector2.Distance(contentPanel.anchoredPosition, targetPos) < threshold)
+        if (tmpText != null)
         {
-            contentPanel.anchoredPosition = targetPos;
+            tmpText.text = "<color=#ff0000>Удаление...</color>";
         }
+
+        // Получаем все графические компоненты
+        Graphic[] graphics = fileToDelete.GetComponentsInChildren<Graphic>();
+        Color[] originalColors = graphics.Select(g => g.color).ToArray();
+        Vector3 originalScale = fileToDelete.localScale;
+
+        // Анимация
+        float elapsed = 0f;
+        while (elapsed < deleteAnimationDuration)
+        {
+            float progress = elapsed / deleteAnimationDuration;
+
+            // Масштабирование
+            fileToDelete.localScale = Vector3.Lerp(originalScale, Vector3.zero, progress);
+
+            // Изменение прозрачности
+            for (int i = 0; i < graphics.Length; i++)
+            {
+                if (graphics[i] != null)
+                {
+                    Color newColor = originalColors[i];
+                    newColor.a = Mathf.Lerp(1, 0, progress);
+                    graphics[i].color = newColor;
+                }
+            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // Удаление из данных
+        filesData = filesData.Where((_, i) => i != index).ToArray();
+
+        // Удаление из ScrollSnap
+        scrollSnap.Remove(index);
+
+        // Проверка победы
+        if (filesData.All(f => !f.shouldBeDeleted))
+        {
+            Debug.Log("Победа! Все опасные файлы удалены!");
+            WinPanel.SetActive(true);
+            deleteButton.interactable = false;
+        }
+
+        isDeleting = false;
+        currentDeletionCoroutine = null;
     }
 }

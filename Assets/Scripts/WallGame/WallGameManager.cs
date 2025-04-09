@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class WallGameManager : MonoBehaviour
 {
     public static WallGameManager Instance { get; private set; }
+    public Intro Sequence;
 
     [System.Serializable]
     public class LevelSettings
@@ -80,6 +81,10 @@ public class WallGameManager : MonoBehaviour
             _currentLevel++;
             UpdateLevelImage();
             ActivateCurrentLevelDropZones();
+        }
+        else
+        {
+            Sequence.PlaySequence("To3level");
         }
     }
 

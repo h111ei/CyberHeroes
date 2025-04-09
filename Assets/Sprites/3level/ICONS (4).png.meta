@@ -372,7 +372,7 @@ TextureImporter:
         serializedVersion: 2
         x: 1560
         y: 468
-        width: 40
+        width: 404
         height: 381
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -383,27 +383,6 @@ TextureImporter:
       bones: []
       spriteID: 077539e883c99764aa86d2616753936a
       internalID: -946550484
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ICONS (4)_12
-      rect:
-        serializedVersion: 2
-        x: 1920
-        y: 467
-        width: 40
-        height: 382
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ccbdcc29a45f7ac43ad398e106d8474d
-      internalID: 257928057
       vertices: []
       indices: 
       edges: []
