@@ -84,7 +84,8 @@ public class WallGameManager : MonoBehaviour
         }
         else
         {
-            Sequence.PlaySequence("To3level");
+            Debug.Log("The end");
+            Sequence.PlaySequence("TosecondRobot");
         }
     }
 

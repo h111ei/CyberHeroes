@@ -131,6 +131,7 @@ public class DragAndDropController : MonoBehaviour, IBeginDragHandler, IDragHand
         var controller = newPanel.GetComponent<DragAndDropController>();
         controller._panelIndex = this._panelIndex;
         controller.UpdateTextFromManager();
+
     }
 
     private void ReturnToSpawnPosition()
@@ -144,7 +145,7 @@ public class DragAndDropController : MonoBehaviour, IBeginDragHandler, IDragHand
         foreach (Transform child in _panelsContainer)
         {
             var panel = child.GetComponent<DragAndDropController>();
-            if (panel != null && !panel._isLocked)
+            if (panel != null)
             {
                 panel.UpdateTextFromManager();
             }

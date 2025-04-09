@@ -11,8 +11,7 @@ public class QuestionDisplay : MonoBehaviour
     public float typeSpeed = 0.05f;
     private string fullQuestionText;
     public Coroutine typeCoroutine; // сопрограмма
-    public AudioSource PIZ;
-    public AudioClip Clava;
+
     private void Start()
     {
         questionTextField = GetComponent<TextMeshProUGUI>();
@@ -24,15 +23,10 @@ public class QuestionDisplay : MonoBehaviour
         if (typeCoroutine != null)
         {
             StopCoroutine(typeCoroutine);
-            PIZ.Stop();
         }
 
         typeCoroutine = StartCoroutine(TypeText());
 
-        if (gameObject.name != "TaskTextPanel")
-        {
-            PIZ.PlayOneShot(Clava, 5f);
-        }
     }
 
     IEnumerator TypeText()
@@ -46,10 +40,7 @@ public class QuestionDisplay : MonoBehaviour
         }
 
         typeCoroutine = null;
-        if (gameObject.name != "TaskTextPanel")
-        {
-            PIZ.Stop();
-        }
+
     }
 
     private void Update()
@@ -61,10 +52,6 @@ public class QuestionDisplay : MonoBehaviour
             {
                 // Прерываем корутину
                 StopCoroutine(typeCoroutine);
-                if (gameObject.name != "f")
-                {
-                    PIZ.Stop();
-                }
                 // Выводим полный текст
                 questionTextField.text = fullQuestionText;
                 typeCoroutine = null;
