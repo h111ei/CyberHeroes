@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CanvasAnimationUtils
 {
-    public static void AnimateCanvasBlackScreen(RectTransform blackScreen, Vector2 targetPosition, float duration, System.Action onComplete = null) //transition animation
+    public static void AnimateCanvasBlackScreen(RectTransform blackScreen, Vector2 targetPosition, float duration, System.Action onComplete = null)
     {
         if (blackScreen == null)
         {
@@ -14,23 +14,21 @@ public class CanvasAnimationUtils
         }
 
         DOTween.Sequence()
-            .Append(blackScreen.DOAnchorPos(targetPosition, duration))
-            .AppendCallback(() =>
-            {
-                onComplete?.Invoke();
-            });
+            .Append(blackScreen.DOAnchorPos(targetPosition, duration).SetEase(Ease.Linear))
+            .AppendCallback(() => onComplete?.Invoke());
     }
 
-    public static Vector2 GetCanvasEdgePosition(RectTransform canvas, RectTransform blackScreen, Vector2 direction) //get full screen
+    public static Vector2 GetOffscreenPosition(RectTransform blackScreen, Vector2 direction)
     {
-        RectTransform canvasRect = canvas.GetComponent<RectTransform>();
-        if (canvasRect == null)
-        {
-            Debug.LogError("Canvas doesn't have a RectTransform component!");
-            return Vector2.zero;
-        }
+        Rect rect = blackScreen.rect;
+        Vector2 screenSize = new Vector2(rect.width, rect.height);
 
-        Vector2 canvasSize = canvasRect.sizeDelta;
-        return blackScreen.anchoredPosition + (direction.normalized * canvasSize.magnitude);
+        // –ассчитываем смещение, достаточное чтобы увести панель за пределы экрана
+        Vector2 offset = new Vector2(
+            screenSize.x * direction.x,
+            screenSize.y * direction.y
+        );
+
+        return blackScreen.anchoredPosition + offset;
     }
 }

@@ -11,7 +11,7 @@ public class MainMenu : MonoBehaviour
 
     public void OnClick() //Start transition
     {
-        Vector2 targetPosition = CanvasAnimationUtils.GetCanvasEdgePosition(canvas, BlackScreenAnim, Vector2.left);
+        Vector2 targetPosition = CanvasAnimationUtils.GetOffscreenPosition(BlackScreenAnim, Vector2.left);
         BlackScreenAnim.gameObject.SetActive(true);
         CanvasAnimationUtils.AnimateCanvasBlackScreen(BlackScreenAnim, targetPosition, 2f, NewSceneLoad);
 

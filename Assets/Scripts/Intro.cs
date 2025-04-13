@@ -70,10 +70,10 @@ public class Intro : MonoBehaviour
     private void InitializeIntroAnimation()
     {
         float maxScale = CalculateMaxScale(introLogo);
-        Vector2 targetPosition = CanvasAnimationUtils.GetCanvasEdgePosition(
-            mainCanvas.GetComponent<RectTransform>(),
-            blackScreen,
-            Vector2.right);
+        Vector2 targetPosition = CanvasAnimationUtils.GetOffscreenPosition(
+        blackScreen,
+        Vector2.right
+        );
 
         CanvasAnimationUtils.AnimateCanvasBlackScreen(blackScreen, targetPosition, 2f, () =>
         {
