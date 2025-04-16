@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,7 +13,7 @@ public class Intro : MonoBehaviour
     public class AnimationTemplate
     {
         public string templateName;
-        public List<AnimationStep> templateSteps;
+        public List<AnimationStep> steps;
     }
 
     [System.Serializable]
@@ -20,6 +21,7 @@ public class Intro : MonoBehaviour
     {
         public string name;
         public string basedOnTemplate; // »м€ шаблона, на котором основана эта последовательность
+        public List<AnimationStep> steps; // Ўаги, если последовательность не основана на шаблоне
         public List<AnimationStepOverride> stepOverrides; // ѕереопределени€ дл€ шаблона
         public bool loop;
         public LoopType loopType;
@@ -28,10 +30,21 @@ public class Intro : MonoBehaviour
     [System.Serializable]
     public class AnimationStepOverride
     {
-        public int stepIndex; // »ндекс шага в шаблоне, который нужно переопределить
+        public enum OverrideType
+        {
+            ModifyExisting, // »зменить существующий шаг
+            InsertAfter,    // ¬ставить новый шаг после указанного
+            InsertBefore,   // ¬ставить новый шаг перед указанным
+            Append          // ƒобавить в конец
+        }
+
+        public OverrideType overrideType = OverrideType.ModifyExisting;
+        public int stepIndex; // »ндекс шага дл€ модификации/вставки
         public AnimationStep overriddenStep; // Ќовые параметры дл€ шага
     }
 
+
+    
     [System.Serializable]
     public class AnimationStep
     {
@@ -55,7 +68,7 @@ public class Intro : MonoBehaviour
         public Ease easeType = Ease.Linear;
         public AudioClip soundClip;
         public float soundVolume = 1f;
-        public System.Action customCallback;
+        public UnityEvent customCallback;
         public string targetSequenceName;
     }
 
@@ -75,7 +88,6 @@ public class Intro : MonoBehaviour
     public RectTransform introLogo;
     public GameObject[] virusObjects;
     public Image alertImage;
-    // другие UI элементы
 
     private Dictionary<string, Sequence> activeSequences = new Dictionary<string, Sequence>();
 
@@ -120,7 +132,6 @@ public class Intro : MonoBehaviour
         AnimationSequence sequence = sequences.Find(s => s.name == sequenceName);
         if (sequence == null) return;
 
-        // ѕолучаем список шагов - либо из шаблона, либо напр€мую из последовательности
         List<AnimationStep> stepsToPlay = GetStepsForSequence(sequence);
 
         Sequence newSequence = DOTween.Sequence();
@@ -153,6 +164,10 @@ public class Intro : MonoBehaviour
                     {
                         newSequence.Append(image.DOFade(step.targetValue.x, step.duration).SetEase(step.easeType));
                     }
+                    else if (step.targetObject.TryGetComponent<TextMeshProUGUI>(out var text))
+                    {
+                        newSequence.Append(text.DOFade(step.targetValue.x, step.duration).SetEase(step.easeType));
+                    }
                     break;
 
                 case AnimationStep.StepType.PlaySound:
@@ -167,12 +182,8 @@ public class Intro : MonoBehaviour
                     newSequence.AppendCallback(() => step.customCallback?.Invoke());
                     break;
                 case AnimationStep.StepType.LoadSequence:
-                    // «апоминаем текущую последовательность
                     string currentSequence = sequenceName;
-
-                    // ƒобавл€ем callback дл€ загрузки новой последовательности
                     newSequence.AppendCallback(() => {
-                        // ѕровер€ем, не пытаемс€ ли загрузить ту же последовательность
                         if (step.targetSequenceName != currentSequence)
                         {
                             this.PlaySequence(step.targetSequenceName);
@@ -192,10 +203,10 @@ public class Intro : MonoBehaviour
 
     private List<AnimationStep> GetStepsForSequence(AnimationSequence sequence)
     {
-        // ≈сли последовательность не основана на шаблоне, возвращаем еЄ собственные шаги
+        // ≈сли последовательность не основана на шаблоне, используем еЄ собственные шаги
         if (string.IsNullOrEmpty(sequence.basedOnTemplate))
         {
-            return sequence.steps;
+            return new List<AnimationStep>(sequence.steps);
         }
 
         // Ќаходим шаблон
@@ -203,12 +214,12 @@ public class Intro : MonoBehaviour
         if (template == null)
         {
             Debug.LogWarning($"Template {sequence.basedOnTemplate} not found for sequence {sequence.name}");
-            return sequence.steps;
+            return new List<AnimationStep>(sequence.steps);
         }
 
         // —оздаем копию шагов из шаблона
         List<AnimationStep> resultSteps = new List<AnimationStep>();
-        foreach (var step in template.templateSteps)
+        foreach (var step in template.steps)
         {
             resultSteps.Add(new AnimationStep()
             {
@@ -225,24 +236,45 @@ public class Intro : MonoBehaviour
         }
 
         // ѕримен€ем переопределени€
-        if (sequence.stepOverrides != null)
+        if (sequence.stepOverrides != null && sequence.stepOverrides.Count > 0)
         {
-            foreach (var overrideStep in sequence.stepOverrides)
-            {
-                if (overrideStep.stepIndex >= 0 && overrideStep.stepIndex < resultSteps.Count)
-                {
-                    var originalStep = resultSteps[overrideStep.stepIndex];
-                    var newStep = overrideStep.overriddenStep;
+            // —начала сортируем переопределени€ по индексу и типу
+            var sortedOverrides = sequence.stepOverrides.OrderBy(o => o.stepIndex).ThenBy(o => o.overrideType).ToList();
 
-                    // ѕримен€ем только измененные пол€
-                    if (newStep.targetObject != null) originalStep.targetObject = newStep.targetObject;
-                    if (newStep.targetValue != Vector3.zero) originalStep.targetValue = newStep.targetValue;
-                    if (newStep.duration > 0) originalStep.duration = newStep.duration;
-                    if (newStep.easeType != Ease.Linear) originalStep.easeType = newStep.easeType;
-                    if (newStep.soundClip != null) originalStep.soundClip = newStep.soundClip;
-                    if (newStep.soundVolume != 1f) originalStep.soundVolume = newStep.soundVolume;
-                    if (newStep.customCallback != null) originalStep.customCallback = newStep.customCallback;
-                    if (!string.IsNullOrEmpty(newStep.targetSequenceName)) originalStep.targetSequenceName = newStep.targetSequenceName;
+            // ѕримен€ем переопределени€ в обратном пор€дке, чтобы индексы не сбивались
+            for (int i = sortedOverrides.Count - 1; i >= 0; i--)
+            {
+                var overrideStep = sortedOverrides[i];
+
+                switch (overrideStep.overrideType)
+                {
+                    case AnimationStepOverride.OverrideType.ModifyExisting:
+                        if (overrideStep.stepIndex >= 0 && overrideStep.stepIndex < resultSteps.Count)
+                        {
+                            var originalStep = resultSteps[overrideStep.stepIndex];
+                            ApplyStepOverride(originalStep, overrideStep.overriddenStep);
+                        }
+                        break;
+
+                    case AnimationStepOverride.OverrideType.InsertAfter:
+                        if (overrideStep.stepIndex >= -1 && overrideStep.stepIndex < resultSteps.Count)
+                        {
+                            int insertIndex = overrideStep.stepIndex + 1;
+                            if (insertIndex > resultSteps.Count) insertIndex = resultSteps.Count;
+                            resultSteps.Insert(insertIndex, overrideStep.overriddenStep);
+                        }
+                        break;
+
+                    case AnimationStepOverride.OverrideType.InsertBefore:
+                        if (overrideStep.stepIndex >= 0 && overrideStep.stepIndex <= resultSteps.Count)
+                        {
+                            resultSteps.Insert(overrideStep.stepIndex, overrideStep.overriddenStep);
+                        }
+                        break;
+
+                    case AnimationStepOverride.OverrideType.Append:
+                        resultSteps.Add(overrideStep.overriddenStep);
+                        break;
                 }
             }
         }
@@ -258,8 +290,17 @@ public class Intro : MonoBehaviour
             activeSequences.Remove(sequenceName);
         }
     }
-
-    // ѕримеры упрощенных методов
+    private void ApplyStepOverride(AnimationStep original, AnimationStep overrides)
+    {
+        if (overrides.targetObject != null) original.targetObject = overrides.targetObject;
+        if (overrides.targetValue != Vector3.zero) original.targetValue = overrides.targetValue;
+        if (overrides.duration > 0) original.duration = overrides.duration;
+        if (overrides.easeType != Ease.Linear) original.easeType = overrides.easeType;
+        if (overrides.soundClip != null) original.soundClip = overrides.soundClip;
+        if (overrides.soundVolume != 1f) original.soundVolume = overrides.soundVolume;
+        if (overrides.customCallback != null) original.customCallback = overrides.customCallback;
+        if (!string.IsNullOrEmpty(overrides.targetSequenceName)) original.targetSequenceName = overrides.targetSequenceName;
+    }
     public void StartDownloadingAntiVirus()
     {
         StopSequence("RedAlert");
