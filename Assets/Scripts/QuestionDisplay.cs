@@ -31,15 +31,18 @@ public class QuestionDisplay : MonoBehaviour
 
     IEnumerator TypeText()
     {
-        questionTextField.text = "";
-
-        foreach (char letter in fullQuestionText.ToCharArray())
+        if (questionTextField != null)
         {
-            questionTextField.text += letter;
-            yield return new WaitForSeconds(typeSpeed);
-        }
+            questionTextField.text = "";
 
-        typeCoroutine = null;
+            foreach (char letter in fullQuestionText.ToCharArray())
+            {
+                questionTextField.text += letter;
+                yield return new WaitForSeconds(typeSpeed);
+            }
+
+            typeCoroutine = null;
+        }
 
     }
 

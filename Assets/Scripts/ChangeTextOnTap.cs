@@ -26,9 +26,14 @@ public class ChangeTextOnTap : MonoBehaviour
         ShowCurrentLine();
     }
 
+    private void OnEnable()
+    {
+        ShowCurrentLine();
+    }
+
+
     public void OnPointerClick()
     {
-        if (isAnimating) return;
 
         // Если есть еще строки в текущем блоке
         if (currentLineIndex + 1 < dialogueBlocks[currentBlockIndex].lines.Length)
@@ -44,17 +49,11 @@ public class ChangeTextOnTap : MonoBehaviour
                 StartCoroutine(PlayBlockAnimation());
             }
 
-            // Переходим к следующему блоку
             if (currentBlockIndex + 1 < dialogueBlocks.Length)
             {
                 currentBlockIndex++;
                 currentLineIndex = 0;
 
-                // Если не нужно ждать анимацию, сразу показываем следующую строку
-                if (!dialogueBlocks[currentBlockIndex - 1].waitForAnimation)
-                {
-                    ShowCurrentLine();
-                }
             }
         }
     }
@@ -87,7 +86,7 @@ public class ChangeTextOnTap : MonoBehaviour
 
     private void ShowCurrentLine()
     {
-        myText.GetComponent<QuestionDisplay>().DisplayQuestion(
+            myText.GetComponent<QuestionDisplay>().DisplayQuestion(
             dialogueBlocks[currentBlockIndex].lines[currentLineIndex]);
     }
 
