@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class WallGameManager : MonoBehaviour
 {
@@ -12,13 +13,13 @@ public class WallGameManager : MonoBehaviour
     public class LevelSettings
     {
         public string[] panelTexts;
-        public int[] correctPanelIndices; // Индексы панелей, которые можно прикрепить
-        public int targetDropZoneIndex; // Индекс DropZone из общего массива
+        public int[] correctPanelIndices;
+        public int targetDropZoneIndex;
         public Sprite levelImage;
     }
 
     [Header("DropZone References")]
-    [SerializeField] private DropZone[] _allDropZones; // Все DropZone на сцене
+    [SerializeField] private DropZone[] _allDropZones;
 
     [Header("Level Settings")]
     [SerializeField] private LevelSettings[] _levels;
@@ -34,6 +35,7 @@ public class WallGameManager : MonoBehaviour
             InitializeDropZones();
             UpdateLevelImage();
             ActivateCurrentLevelDropZones();
+            // Не обновляем панели здесь, так как они могут еще не быть инициализированы
         }
         else
         {
@@ -43,13 +45,11 @@ public class WallGameManager : MonoBehaviour
 
     private void InitializeDropZones()
     {
-        
+
     }
 
     private void ActivateCurrentLevelDropZones()
     {
-       
-        // Активируем только нужную для текущего уровня
         if (_currentLevel < _levels.Length)
         {
             int zoneIndex = _levels[_currentLevel].targetDropZoneIndex;
@@ -60,20 +60,6 @@ public class WallGameManager : MonoBehaviour
         }
     }
 
-    public bool CanAttachToDropZone(DropZone dropZone, int panelIndex)
-    {
-        if (_currentLevel >= _levels.Length) return false;
-
-        // Проверяем что:
-        // 1. Это правильная панель для уровня
-        // 2. Это правильный DropZone для уровня
-        int correctZoneIndex = _levels[_currentLevel].targetDropZoneIndex;
-        bool isCorrectPanel = System.Array.IndexOf(_levels[_currentLevel].correctPanelIndices, panelIndex) >= 0;
-        bool isCorrectZone = _allDropZones[correctZoneIndex] == dropZone;
-
-        return isCorrectPanel && isCorrectZone;
-    }
-
     public void MoveToNextLevel()
     {
         if (_currentLevel < _levels.Length - 1)
@@ -81,6 +67,7 @@ public class WallGameManager : MonoBehaviour
             _currentLevel++;
             UpdateLevelImage();
             ActivateCurrentLevelDropZones();
+            UpdateAllPanelsText();
         }
         else
         {
@@ -106,6 +93,16 @@ public class WallGameManager : MonoBehaviour
             return "";
 
         return _levels[_currentLevel].panelTexts[panelIndex];
+    }
+
+    private void UpdateAllPanelsText()
+    {
+        // Находим все панели на сцене
+        DragAndDropController[] allPanels = FindObjectsOfType<DragAndDropController>();
+        foreach (var panel in allPanels)
+        {
+            panel.UpdateTextFromManager();
+        }
     }
 
     public int GetCurrentLevel() => _currentLevel;
