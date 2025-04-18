@@ -20,9 +20,9 @@ public class Intro : MonoBehaviour
     public class AnimationSequence
     {
         public string name;
-        public string basedOnTemplate; // Имя шаблона, на котором основана эта последовательность
-        public List<AnimationStep> steps; // Шаги, если последовательность не основана на шаблоне
-        public List<AnimationStepOverride> stepOverrides; // Переопределения для шаблона
+        public string basedOnTemplate; // Template name this sequence is based on
+        public List<AnimationStep> steps; // Steps if sequence isn't based on template
+        public List<AnimationStepOverride> stepOverrides; // Overrides for template steps
         public bool loop;
         public LoopType loopType;
     }
@@ -32,15 +32,15 @@ public class Intro : MonoBehaviour
     {
         public enum OverrideType
         {
-            ModifyExisting, // Изменить существующий шаг
-            InsertAfter,    // Вставить новый шаг после указанного
-            InsertBefore,   // Вставить новый шаг перед указанным
-            Append          // Добавить в конец
+            ModifyExisting, 
+            InsertAfter,    
+            InsertBefore,   
+            Append          
         }
 
         public OverrideType overrideType = OverrideType.ModifyExisting;
-        public int stepIndex; // Индекс шага для модификации/вставки
-        public AnimationStep overriddenStep; // Новые параметры для шага
+        public int stepIndex; 
+        public AnimationStep overriddenStep; 
     }
 
 
@@ -110,6 +110,7 @@ public class Intro : MonoBehaviour
         });
     }
 
+    // Calculate maximum scale to fit object within screen
     private float CalculateMaxScale(RectTransform target)
     {
         float screenWidth = Screen.width;
@@ -203,13 +204,13 @@ public class Intro : MonoBehaviour
 
     private List<AnimationStep> GetStepsForSequence(AnimationSequence sequence)
     {
-        // Если последовательность не основана на шаблоне, используем её собственные шаги
+        // If sequence isn't based on template, use its own steps
         if (string.IsNullOrEmpty(sequence.basedOnTemplate))
         {
             return new List<AnimationStep>(sequence.steps);
         }
 
-        // Находим шаблон
+        // Find template
         var template = templates.Find(t => t.templateName == sequence.basedOnTemplate);
         if (template == null)
         {
@@ -217,7 +218,7 @@ public class Intro : MonoBehaviour
             return new List<AnimationStep>(sequence.steps);
         }
 
-        // Создаем копию шагов из шаблона
+
         List<AnimationStep> resultSteps = new List<AnimationStep>();
         foreach (var step in template.steps)
         {
@@ -235,13 +236,13 @@ public class Intro : MonoBehaviour
             });
         }
 
-        // Применяем переопределения
+        // Apply overrides
         if (sequence.stepOverrides != null && sequence.stepOverrides.Count > 0)
         {
-            // Сначала сортируем переопределения по индексу и типу
+            // Sort overrides by index and type
             var sortedOverrides = sequence.stepOverrides.OrderBy(o => o.stepIndex).ThenBy(o => o.overrideType).ToList();
 
-            // Применяем переопределения в обратном порядке, чтобы индексы не сбивались
+            // Apply overrides in reverse order to maintain correct indices
             for (int i = sortedOverrides.Count - 1; i >= 0; i--)
             {
                 var overrideStep = sortedOverrides[i];

@@ -20,7 +20,7 @@ public class HorizontalImageScroller : MonoBehaviour
     public SimpleScrollSnap scrollSnap;
     public Button deleteButton;
     public float deleteAnimationDuration = 0.5f;
-    public GameObject panelPrefab; // Префаб панели с Image и дочерним TextMeshProUGUI
+    public GameObject panelPrefab;
     public FileData[] filesData;
 
     private bool isDeleting = false;

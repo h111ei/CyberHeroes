@@ -50,12 +50,9 @@ public class QuestionDisplay : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            // Проверяем, запущена ли корутина
             if (typeCoroutine != null)
             {
-                // Прерываем корутину
                 StopCoroutine(typeCoroutine);
-                // Выводим полный текст
                 questionTextField.text = fullQuestionText;
                 typeCoroutine = null;
             }

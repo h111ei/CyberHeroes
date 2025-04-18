@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 36613986}
+  - component: {fileID: 36613987}
   m_Layer: 5
   m_Name: RobotTextPanel
   m_TagString: Untagged
@@ -160,6 +161,78 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &36613987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36613984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b58077dd0f2248489e4c5d212729aa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myText: {fileID: 1070646865}
+  dialogueBlocks:
+  - lines:
+    - "\u041F\u0440\u0438\u0432\u0435\u0442 \u044F \u041A\u0438\u0431\u0435\u0440!"
+    - "\u041D\u0430 \u0442\u0432\u043E\u0435\u043C \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0435
+      \u043E\u0431\u043D\u0430\u0440\u0443\u0436\u0435\u043D \u0432\u0438\u0440\u0443\u0441
+      \xAB\u0425\u0430\u043A\u0435\u0440\u0443\u0441\xBB."
+    - "\u042F \u043F\u043E\u043C\u043E\u0433\u0443 \u0442\u0435\u0431\u0435 \u0441\u043F\u0440\u0430\u0432\u0438\u0442\u044C\u0441\u044F
+      \u0441 \u043D\u0438\u043C"
+    - "\u0414\u043B\u044F \u043D\u0430\u0447\u0430\u043B\u0430 \u043D\u0430\u043C
+      \u043D\u0443\u0436\u043D\u043E \u043F\u043E\u043F\u0430\u0441\u0442\u044C \u0432
+      \u041A\u0440\u0435\u043F\u043E\u0441\u0442\u044C \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0430"
+    - "\u0411\u0443\u0434\u044C \u043E\u0441\u0442\u043E\u0440\u043E\u0436\u0435\u043D,
+      \u043F\u043E \u0434\u043E\u0440\u043E\u0433\u0435 \u0442\u0435\u0431\u0435
+      \u043C\u043E\u0433\u0443\u0442 \u043F\u043E\u043F\u0430\u0441\u0442\u044C\u0441\u044F
+      \u043B\u043E\u0432\u0443\u0448\u043A\u0438 \u043F\u043E\u043C\u043E\u0449\u043D\u0438\u043A\u043E\u0432
+      \u0425\u0430\u043A\u0435\u0440\u0443\u0441\u0430"
+    animationSequenceName: MazeIntro
+    waitForAnimation: 1
+  - lines:
+    - "\u041E\u0442\u043B\u0438\u0447\u043D\u043E! \u0422\u044B \u0441\u043F\u0440\u0430\u0432\u0438\u043B\u0441\u044F"
+    - "\u041E\u0445, \u043D\u043E \u043F\u0430\u0440\u043E\u043B\u044C\u043D\u0430\u044F
+      \u0441\u0442\u0435\u043D\u0430 \u0440\u0430\u0437\u0440\u0443\u0448\u0435\u043D\u0430\u2026"
+    - "\u0412\u0438\u0434\u0438\u043C\u043E \u043E\u043D\u0430 \u0441\u043B\u043E\u043C\u0430\u043B\u0430\u0441\u044C
+      \u0438\u0437-\u0437\u0430 \u043D\u0435\u043F\u0440\u043E\u0447\u043D\u044B\u0445
+      \u043F\u0430\u0440\u043E\u043B\u0435\u0439-\u0431\u043B\u043E\u043A\u043E\u0432."
+    - "\u041E\u0442\u0441\u0442\u0440\u043E\u0438\u043C \u0441\u0442\u0435\u043D\u0443!"
+    - "\u0412\u044B\u0431\u0438\u0440\u0430\u0439 \u0442\u043E\u043B\u044C\u043A\u043E
+      \u043F\u0440\u043E\u0447\u043D\u044B\u0435 \u0431\u043B\u043E\u043A\u0438-\u043F\u0430\u0440\u043E\u043B\u0438."
+    animationSequenceName: BlackScreenFade
+    waitForAnimation: 1
+  - lines:
+    - "\u0422\u0435\u043F\u0435\u0440\u044C \u043E\u0441\u0442\u0430\u043B\u0441\u044F
+      \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u0439 \u0448\u0430\u0433"
+    - "\u041D\u0443\u0436\u043D\u043E \u043F\u0440\u043E\u0432\u0435\u0441\u0442\u0438
+      \u0441\u043A\u0430\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0438
+      \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0440\u0435\u043C\u0435\u043D\u043D\u044B\u0435
+      \u0438 \u0432\u0440\u0435\u0434\u043E\u043D\u043E\u0441\u043D\u044B\u0435 \u0444\u0430\u0439\u043B\u044B"
+    - "\u042F \u043F\u043E\u043C\u043E\u0433\u0443 \u0442\u0435\u0431\u0435 \u0441\u043E
+      \u0441\u043A\u0430\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\u043C."
+    animationSequenceName: To3level
+    waitForAnimation: 1
+  - lines:
+    - "\u0422\u044B \u0441\u043F\u0440\u0430\u0432\u0438\u043B\u0441\u044F!"
+    - "\u0412\u043E \u0432\u0440\u0435\u043C\u044F \u043D\u0430\u0448\u0435\u0433\u043E
+      \u043F\u0443\u0442\u0435\u0448\u0435\u0441\u0442\u0432\u0438\u044F \u0442\u044B
+      \u043D\u0430\u0443\u0447\u0438\u043B\u0441\u044F \u0438\u0437\u0431\u0435\u0433\u0430\u0442\u044C
+      \u043B\u043E\u0432\u0443\u0448\u0435\u043A \u043C\u043E\u0448\u0435\u043D\u043D\u0438\u043A\u043E\u0432,
+      \u0432\u044B\u0431\u0438\u0440\u0430\u0442\u044C \u043D\u0430\u0434\u0435\u0436\u043D\u044B\u0435
+      \u043F\u0430\u0440\u043E\u043B\u0438 \u0438 \u0438\u0441\u043A\u0430\u0442\u044C
+      \u043D\u0435\u043D\u0443\u0436\u043D\u044B\u0435 \u0444\u0430\u0439\u043B\u044B."
+    - "\u0421\u043A\u0430\u0447\u0430\u0432 \u0430\u043D\u0442\u0438\u0432\u0438\u0440\u0443\u0441,
+      \u0442\u044B \u0441\u0434\u0435\u043B\u0430\u043B \u0432\u0435\u0440\u043D\u044B\u0439
+      \u0448\u0430\u0433 \u043F\u043E \u0437\u0430\u0449\u0438\u0442\u0435 \u0441\u0432\u043E\u0435\u0433\u043E
+      \u043C\u0438\u0440\u0430."
+    - "\u0422\u0435\u043F\u0435\u0440\u044C \u0442\u044B \u043E\u0444\u0438\u0446\u0438\u0430\u043B\u044C\u043D\u043E
+      \u041A\u0438\u0431\u0435\u0440-\u0433\u0435\u0440\u043E\u0439!"
+    animationSequenceName: EndPanel
+    waitForAnimation: 1
+  animationManager: {fileID: 443336917}
 --- !u!1 &75350023
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,41 +372,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3252892436986328043, guid: a1ec3309957318841a5e68ab2178c627, type: 3}
   m_PrefabInstance: {fileID: 1366149121}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &89502027
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 89502028}
-  m_Layer: 5
-  m_Name: forpanel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &89502028
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 89502027}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1298765728}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &235423800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1447,7 +1485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panelPrefab: {fileID: 412441681}
-  _spawnParent: {fileID: 89502028}
+  _spawnParent: {fileID: 0}
   _spawnPosition: {x: 0, y: 0}
   _panelsContainer: {fileID: 0}
   _panelIndex: 0
@@ -1793,7 +1831,7 @@ MonoBehaviour:
       targetSequenceName: 
     - type: 3
       targetObject: {fileID: 954594269}
-      targetValue: {x: 3, y: 3, z: 0}
+      targetValue: {x: 1, y: 1, z: 0}
       duration: 0.5
       easeType: 0
       soundClip: {fileID: 0}
@@ -2367,98 +2405,100 @@ MonoBehaviour:
         targetSequenceName: 
     loop: 0
     loopType: 0
+  - name: TosecondRobot
+    basedOnTemplate: BlackScreen
+    steps: []
+    stepOverrides:
+    - overrideType: 1
+      stepIndex: 2
+      overriddenStep:
+        type: 0
+        targetObject: {fileID: 581227049}
+        targetValue: {x: 0, y: 0, z: 0}
+        duration: 0
+        easeType: 0
+        soundClip: {fileID: 0}
+        soundVolume: 0
+        customCallback:
+          m_PersistentCalls:
+            m_Calls: []
+        targetSequenceName: 
+    - overrideType: 1
+      stepIndex: 3
+      overriddenStep:
+        type: 0
+        targetObject: {fileID: 36613984}
+        targetValue: {x: 0, y: 0, z: 0}
+        duration: 0
+        easeType: 0
+        soundClip: {fileID: 0}
+        soundVolume: 0
+        customCallback:
+          m_PersistentCalls:
+            m_Calls: []
+        targetSequenceName: 
+    - overrideType: 1
+      stepIndex: 4
+      overriddenStep:
+        type: 1
+        targetObject: {fileID: 1364767238}
+        targetValue: {x: 0, y: 0, z: 0}
+        duration: 0
+        easeType: 0
+        soundClip: {fileID: 0}
+        soundVolume: 0
+        customCallback:
+          m_PersistentCalls:
+            m_Calls: []
+        targetSequenceName: 
+    loop: 0
+    loopType: 0
   - name: Ending
-    basedOnTemplate: 
-    steps:
-    - type: 0
-      targetObject: {fileID: 720742660}
-      targetValue: {x: 0, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 4
-      targetObject: {fileID: 720742660}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 6
-      targetObject: {fileID: 720742660}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 1
-      targetObject: {fileID: 1025364623}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 0
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 0
-      targetObject: {fileID: 581227049}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 0
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 0
-      targetObject: {fileID: 36613984}
-      targetValue: {x: 0, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 4
-      targetObject: {fileID: 720742660}
-      targetValue: {x: 0, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 1
-      targetObject: {fileID: 1679401753}
-      targetValue: {x: 0, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    stepOverrides: []
+    basedOnTemplate: BlackScreen
+    steps: []
+    stepOverrides:
+    - overrideType: 1
+      stepIndex: 2
+      overriddenStep:
+        type: 0
+        targetObject: {fileID: 581227049}
+        targetValue: {x: 0, y: 0, z: 0}
+        duration: 0
+        easeType: 0
+        soundClip: {fileID: 0}
+        soundVolume: 0
+        customCallback:
+          m_PersistentCalls:
+            m_Calls: []
+        targetSequenceName: 
+    - overrideType: 1
+      stepIndex: 3
+      overriddenStep:
+        type: 0
+        targetObject: {fileID: 36613984}
+        targetValue: {x: 0, y: 0, z: 0}
+        duration: 0
+        easeType: 0
+        soundClip: {fileID: 0}
+        soundVolume: 0
+        customCallback:
+          m_PersistentCalls:
+            m_Calls: []
+        targetSequenceName: 
+    - overrideType: 1
+      stepIndex: 4
+      overriddenStep:
+        type: 1
+        targetObject: {fileID: 1364767238}
+        targetValue: {x: 0, y: 0, z: 0}
+        duration: 0
+        easeType: 0
+        soundClip: {fileID: 0}
+        soundVolume: 0
+        customCallback:
+          m_PersistentCalls:
+            m_Calls: []
+        targetSequenceName: 
     loop: 0
     loopType: 0
   - name: EndPanel
@@ -2614,122 +2654,6 @@ MonoBehaviour:
           m_Calls: []
       targetSequenceName: 
     - type: 1
-      targetObject: {fileID: 36613984}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 0
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 4
-      targetObject: {fileID: 720742660}
-      targetValue: {x: 0, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 1
-      targetObject: {fileID: 720742660}
-      targetValue: {x: 0, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    stepOverrides: []
-    loop: 0
-    loopType: 0
-  - name: TosecondRobot
-    basedOnTemplate: 
-    steps:
-    - type: 0
-      targetObject: {fileID: 720742660}
-      targetValue: {x: 0, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 4
-      targetObject: {fileID: 720742660}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 6
-      targetObject: {fileID: 720742660}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 1
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 0
-      targetObject: {fileID: 36613984}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 0
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 0
-      targetObject: {fileID: 581227049}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 0
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 1
-      targetObject: {fileID: 1364767238}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 0
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 1
-      targetObject: {fileID: 89502027}
-      targetValue: {x: 1, y: 1, z: 0}
-      duration: 0
-      easeType: 0
-      soundClip: {fileID: 0}
-      soundVolume: 0
-      customCallback:
-        m_PersistentCalls:
-          m_Calls: []
-      targetSequenceName: 
-    - type: 0
       targetObject: {fileID: 36613984}
       targetValue: {x: 1, y: 1, z: 0}
       duration: 0
@@ -3016,81 +2940,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 458890102}
-  m_CullTransparentMesh: 1
---- !u!1 &466366059
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 466366060}
-  - component: {fileID: 466366062}
-  - component: {fileID: 466366061}
-  m_Layer: 5
-  m_Name: win
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &466366060
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466366059}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1298765728}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &466366061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466366059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.20369029, g: 1, b: 0, a: 0.392}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &466366062
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466366059}
   m_CullTransparentMesh: 1
 --- !u!1001 &509432435
 PrefabInstance:
@@ -4362,7 +4211,6 @@ GameObject:
   - component: {fileID: 786840237}
   - component: {fileID: 786840236}
   - component: {fileID: 786840235}
-  - component: {fileID: 786840239}
   - component: {fileID: 786840238}
   m_Layer: 5
   m_Name: Button
@@ -4506,25 +4354,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &786840239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 786840233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ef031b683021f44581761c903ff4c24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shakeIntensity: 0.1
-  shakeSpeed: 10
-  rotationShakeAmount: 1
-  shakeX: 1
-  shakeY: 1
-  shakeZ: 1
-  rotateShake: 0
 --- !u!1 &793354524
 GameObject:
   m_ObjectHideFlags: 0
@@ -4883,7 +4712,6 @@ GameObject:
   - component: {fileID: 917619942}
   - component: {fileID: 917619941}
   - component: {fileID: 917619943}
-  - component: {fileID: 917619946}
   - component: {fileID: 917619944}
   - component: {fileID: 917619945}
   m_Layer: 5
@@ -4976,7 +4804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panelPrefab: {fileID: 917619938}
-  _spawnParent: {fileID: 89502028}
+  _spawnParent: {fileID: 0}
   _spawnPosition: {x: 0, y: 0}
   _panelsContainer: {fileID: 0}
   _panelIndex: 2
@@ -4995,18 +4823,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 0
   m_AspectRatio: 6.846206
---- !u!114 &917619946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 917619938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a669c8bcae75694419740450d3b164b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &930595214
 GameObject:
   m_ObjectHideFlags: 0
@@ -5443,7 +5259,6 @@ GameObject:
   - component: {fileID: 1070646865}
   - component: {fileID: 1070646868}
   - component: {fileID: 1070646867}
-  - component: {fileID: 1070646869}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -5592,78 +5407,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 373f8480d595748408a5e11aa74d2773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1070646869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1070646863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b58077dd0f2248489e4c5d212729aa8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myText: {fileID: 1070646865}
-  dialogueBlocks:
-  - lines:
-    - "\u041F\u0440\u0438\u0432\u0435\u0442 \u044F \u041A\u0438\u0431\u0435\u0440!"
-    - "\u041D\u0430 \u0442\u0432\u043E\u0435\u043C \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0435
-      \u043E\u0431\u043D\u0430\u0440\u0443\u0436\u0435\u043D \u0432\u0438\u0440\u0443\u0441
-      \xAB\u0425\u0430\u043A\u0435\u0440\u0443\u0441\xBB."
-    - "\u042F \u043F\u043E\u043C\u043E\u0433\u0443 \u0442\u0435\u0431\u0435 \u0441\u043F\u0440\u0430\u0432\u0438\u0442\u044C\u0441\u044F
-      \u0441 \u043D\u0438\u043C"
-    - "\u0414\u043B\u044F \u043D\u0430\u0447\u0430\u043B\u0430 \u043D\u0430\u043C
-      \u043D\u0443\u0436\u043D\u043E \u043F\u043E\u043F\u0430\u0441\u0442\u044C \u0432
-      \u041A\u0440\u0435\u043F\u043E\u0441\u0442\u044C \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0430"
-    - "\u0411\u0443\u0434\u044C \u043E\u0441\u0442\u043E\u0440\u043E\u0436\u0435\u043D,
-      \u043F\u043E \u0434\u043E\u0440\u043E\u0433\u0435 \u0442\u0435\u0431\u0435
-      \u043C\u043E\u0433\u0443\u0442 \u043F\u043E\u043F\u0430\u0441\u0442\u044C\u0441\u044F
-      \u043B\u043E\u0432\u0443\u0448\u043A\u0438 \u043F\u043E\u043C\u043E\u0449\u043D\u0438\u043A\u043E\u0432
-      \u0425\u0430\u043A\u0435\u0440\u0443\u0441\u0430"
-    animationSequenceName: MazeIntro
-    waitForAnimation: 1
-  - lines:
-    - "\u041E\u0442\u043B\u0438\u0447\u043D\u043E! \u0422\u044B \u0441\u043F\u0440\u0430\u0432\u0438\u043B\u0441\u044F"
-    - "\u041E\u0445, \u043D\u043E \u043F\u0430\u0440\u043E\u043B\u044C\u043D\u0430\u044F
-      \u0441\u0442\u0435\u043D\u0430 \u0440\u0430\u0437\u0440\u0443\u0448\u0435\u043D\u0430\u2026"
-    - "\u0412\u0438\u0434\u0438\u043C\u043E \u043E\u043D\u0430 \u0441\u043B\u043E\u043C\u0430\u043B\u0430\u0441\u044C
-      \u0438\u0437-\u0437\u0430 \u043D\u0435\u043F\u0440\u043E\u0447\u043D\u044B\u0445
-      \u043F\u0430\u0440\u043E\u043B\u0435\u0439-\u0431\u043B\u043E\u043A\u043E\u0432."
-    - "\u041E\u0442\u0441\u0442\u0440\u043E\u0438\u043C \u0441\u0442\u0435\u043D\u0443!"
-    - "\u0412\u044B\u0431\u0438\u0440\u0430\u0439 \u0442\u043E\u043B\u044C\u043A\u043E
-      \u043F\u0440\u043E\u0447\u043D\u044B\u0435 \u0431\u043B\u043E\u043A\u0438-\u043F\u0430\u0440\u043E\u043B\u0438."
-    animationSequenceName: BlackScreenFade
-    waitForAnimation: 1
-  - lines:
-    - "\u0422\u0435\u043F\u0435\u0440\u044C \u043E\u0441\u0442\u0430\u043B\u0441\u044F
-      \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u0439 \u0448\u0430\u0433"
-    - "\u041D\u0443\u0436\u043D\u043E \u043F\u0440\u043E\u0432\u0435\u0441\u0442\u0438
-      \u0441\u043A\u0430\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0438
-      \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0440\u0435\u043C\u0435\u043D\u043D\u044B\u0435
-      \u0438 \u0432\u0440\u0435\u0434\u043E\u043D\u043E\u0441\u043D\u044B\u0435 \u0444\u0430\u0439\u043B\u044B"
-    - "\u042F \u043F\u043E\u043C\u043E\u0433\u0443 \u0442\u0435\u0431\u0435 \u0441\u043E
-      \u0441\u043A\u0430\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435\u043C."
-    animationSequenceName: To3level
-    waitForAnimation: 1
-  - lines:
-    - "\u0422\u044B \u0441\u043F\u0440\u0430\u0432\u0438\u043B\u0441\u044F!"
-    - "\u0412\u043E \u0432\u0440\u0435\u043C\u044F \u043D\u0430\u0448\u0435\u0433\u043E
-      \u043F\u0443\u0442\u0435\u0448\u0435\u0441\u0442\u0432\u0438\u044F \u0442\u044B
-      \u043D\u0430\u0443\u0447\u0438\u043B\u0441\u044F \u0438\u0437\u0431\u0435\u0433\u0430\u0442\u044C
-      \u043B\u043E\u0432\u0443\u0448\u0435\u043A \u043C\u043E\u0448\u0435\u043D\u043D\u0438\u043A\u043E\u0432,
-      \u0432\u044B\u0431\u0438\u0440\u0430\u0442\u044C \u043D\u0430\u0434\u0435\u0436\u043D\u044B\u0435
-      \u043F\u0430\u0440\u043E\u043B\u0438 \u0438 \u0438\u0441\u043A\u0430\u0442\u044C
-      \u043D\u0435\u043D\u0443\u0436\u043D\u044B\u0435 \u0444\u0430\u0439\u043B\u044B."
-    - "\u0421\u043A\u0430\u0447\u0430\u0432 \u0430\u043D\u0442\u0438\u0432\u0438\u0440\u0443\u0441,
-      \u0442\u044B \u0441\u0434\u0435\u043B\u0430\u043B \u0432\u0435\u0440\u043D\u044B\u0439
-      \u0448\u0430\u0433 \u043F\u043E \u0437\u0430\u0449\u0438\u0442\u0435 \u0441\u0432\u043E\u0435\u0433\u043E
-      \u043C\u0438\u0440\u0430."
-    - "\u0422\u0435\u043F\u0435\u0440\u044C \u0442\u044B \u043E\u0444\u0438\u0446\u0438\u0430\u043B\u044C\u043D\u043E
-      \u041A\u0438\u0431\u0435\u0440-\u0433\u0435\u0440\u043E\u0439!"
-    animationSequenceName: EndPanel
-    waitForAnimation: 1
-  animationManager: {fileID: 443336917}
 --- !u!1 &1115129560
 GameObject:
   m_ObjectHideFlags: 0
@@ -6361,7 +6104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panelPrefab: {fileID: 1291066153}
-  _spawnParent: {fileID: 89502028}
+  _spawnParent: {fileID: 0}
   _spawnPosition: {x: 0, y: 0}
   _panelsContainer: {fileID: 0}
   _panelIndex: 1
@@ -6494,10 +6237,7 @@ RectTransform:
   - {fileID: 1368961603}
   - {fileID: 1025364624}
   - {fileID: 311918056}
-  - {fileID: 466366060}
-  - {fileID: 1562761027}
   - {fileID: 1405922203}
-  - {fileID: 89502028}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7283,7 +7023,6 @@ GameObject:
   - component: {fileID: 1415571991}
   - component: {fileID: 1415571994}
   - component: {fileID: 1415571993}
-  - component: {fileID: 1415571995}
   - component: {fileID: 1415571992}
   m_Layer: 5
   m_Name: Button (1)
@@ -7406,25 +7145,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415571990}
   m_CullTransparentMesh: 1
---- !u!114 &1415571995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1415571990}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ef031b683021f44581761c903ff4c24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shakeIntensity: 0.1
-  shakeSpeed: 10
-  rotationShakeAmount: 1
-  shakeX: 1
-  shakeY: 1
-  shakeZ: 1
-  rotateShake: 0
 --- !u!1 &1435193974
 GameObject:
   m_ObjectHideFlags: 0
@@ -7511,7 +7231,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 128.05
+  m_fontSize: 117.9
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8195,81 +7915,6 @@ MonoBehaviour:
     targetDropZoneIndex: 2
     levelImage: {fileID: -825909745, guid: 9eab90785205c1d45bec03e9b18611cc, type: 3}
   _targetImage: {fileID: 1240807858}
---- !u!1 &1562761026
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1562761027}
-  - component: {fileID: 1562761029}
-  - component: {fileID: 1562761028}
-  m_Layer: 5
-  m_Name: lose
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &1562761027
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1562761026}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1298765728}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1562761028
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1562761026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.07585368, b: 0, a: 0.392}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1562761029
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1562761026}
-  m_CullTransparentMesh: 1
 --- !u!1 &1571629980
 GameObject:
   m_ObjectHideFlags: 0

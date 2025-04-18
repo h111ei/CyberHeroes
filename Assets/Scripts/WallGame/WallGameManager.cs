@@ -94,6 +94,21 @@ public class WallGameManager : MonoBehaviour
 
         return _levels[_currentLevel].panelTexts[panelIndex];
     }
+    public bool CanAttachToDropZone(DropZone dropZone, int panelIndex)
+    {
+        if (_currentLevel >= _levels.Length) return false;
+
+        // Проверяем что:
+        // 1. Это правильная панель для уровня
+        // 2. Это правильный DropZone для уровня
+        int correctZoneIndex = _levels[_currentLevel].targetDropZoneIndex;
+        bool isCorrectPanel = System.Array.IndexOf(_levels[_currentLevel].correctPanelIndices, panelIndex) >= 0;
+        bool isCorrectZone = _allDropZones[correctZoneIndex] == dropZone;
+
+        return isCorrectPanel && isCorrectZone;
+    }
+
+    
 
     private void UpdateAllPanelsText()
     {
