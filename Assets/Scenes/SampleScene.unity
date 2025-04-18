@@ -2424,7 +2424,7 @@ MonoBehaviour:
             m_Calls: []
         targetSequenceName: 
     - overrideType: 1
-      stepIndex: 3
+      stepIndex: 2
       overriddenStep:
         type: 0
         targetObject: {fileID: 36613984}
@@ -2438,7 +2438,7 @@ MonoBehaviour:
             m_Calls: []
         targetSequenceName: 
     - overrideType: 1
-      stepIndex: 4
+      stepIndex: 2
       overriddenStep:
         type: 1
         targetObject: {fileID: 1364767238}
@@ -2489,7 +2489,7 @@ MonoBehaviour:
       stepIndex: 4
       overriddenStep:
         type: 1
-        targetObject: {fileID: 1364767238}
+        targetObject: {fileID: 1025364623}
         targetValue: {x: 0, y: 0, z: 0}
         duration: 0
         easeType: 0
@@ -3827,6 +3827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd6ead2ead056843b0eda2dd98d3b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AnimationManager: {fileID: 443336917}
+  BackgroundMusic: {fileID: 405573348}
   questions:
   - questionText: "\u041F\u0440\u0438\u0432\u0435\u0442, \u0443 \u043C\u0435\u043D\u044F
       \u0442\u0443\u0442 \u043D\u0435\u0445\u043E\u0440\u043E\u0448\u0430\u044F \u0441\u0438\u0442\u0443\u0430\u0446\u0438\u044F\u2026
@@ -3942,11 +3944,9 @@ MonoBehaviour:
   NextPanel: {fileID: 379791908}
   WinPanel: {fileID: 1364767238}
   hi: {fileID: 443336919}
-  BackgroundMusic: {fileID: 405573348}
   Brass: {fileID: 8300000, guid: 9e1c257aa83af1043afe33a76b1b8fa5, type: 3}
   AnotherBlackPanel: {fileID: 1679401755}
   Quiz: {fileID: 1481108496}
-  AnimationManager: {fileID: 443336917}
 --- !u!4 &599061145
 Transform:
   m_ObjectHideFlags: 0
@@ -7879,7 +7879,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12d83792babe246479988dd71f739b8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sequence: {fileID: 443336917}
+  AnimationManager: {fileID: 443336917}
+  BackgroundMusic: {fileID: 0}
   _allDropZones:
   - {fileID: 1172149472}
   - {fileID: 413766561}

@@ -19,7 +19,6 @@ public class ChangeTextOnTap : MonoBehaviour
 
     private int currentBlockIndex = 0;
     private int currentLineIndex = 0;
-    private bool isAnimating = false;
 
     private void Start()
     {
@@ -35,7 +34,6 @@ public class ChangeTextOnTap : MonoBehaviour
     public void OnPointerClick()
     {
 
-        // Если есть еще строки в текущем блоке
         if (currentLineIndex + 1 < dialogueBlocks[currentBlockIndex].lines.Length)
         {
             currentLineIndex++;
@@ -43,10 +41,10 @@ public class ChangeTextOnTap : MonoBehaviour
         }
         else
         {
-            // Запускаем анимацию для этого блока
             if (!string.IsNullOrEmpty(dialogueBlocks[currentBlockIndex].animationSequenceName))
             {
-                StartCoroutine(PlayBlockAnimation());
+                string sequenceName = dialogueBlocks[currentBlockIndex].animationSequenceName;
+                animationManager.PlaySequence(sequenceName);
             }
 
             if (currentBlockIndex + 1 < dialogueBlocks.Length)
@@ -58,31 +56,6 @@ public class ChangeTextOnTap : MonoBehaviour
         }
     }
 
-    private IEnumerator PlayBlockAnimation()
-    {
-        isAnimating = true;
-        string sequenceName = dialogueBlocks[currentBlockIndex].animationSequenceName;
-
-        // Запускаем анимацию
-        animationManager.PlaySequence(sequenceName);
-
-        // Ждем завершения анимации (если нужно)
-        if (dialogueBlocks[currentBlockIndex].waitForAnimation)
-        {
-            // Здесь нужно реализовать ожидание завершения анимации
-            // Можно добавить событие в Intro или использовать корутину с примерным временем
-            yield return new WaitForSeconds(GetAnimationDuration(sequenceName));
-        }
-
-        isAnimating = false;
-    }
-
-    private float GetAnimationDuration(string sequenceName)
-    {
-        // Здесь можно реализовать получение длительности анимации
-        // Например, хранить длительности в словаре или вычислять сумму длительностей шагов
-        return 2f; // Примерное значение
-    }
 
     private void ShowCurrentLine()
     {
