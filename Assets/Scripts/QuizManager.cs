@@ -7,7 +7,7 @@ using TMPro;
 using DG.Tweening;
 
 
-public class QuizManager : BaseGameManager
+public class QuizManager : MonoBehaviour
 {
     [System.Serializable]
     public class Question
@@ -21,6 +21,7 @@ public class QuizManager : BaseGameManager
     }
 
     public List<Question> questions;
+    private int currentQuestionIndex = 0;
 
     public Image questionImageField;
     public Button[] answerButtons;
@@ -30,26 +31,35 @@ public class QuizManager : BaseGameManager
     public TextMeshProUGUI CorrectTextUI;
     public GameObject NextPanel;
     public GameObject WinPanel;
+
     public AudioSource hi;
+    public AudioSource BackgroundMusic;
     public AudioClip Brass;
+
+
+
     public Image AnotherBlackPanel;
     public GameObject Quiz;
 
-    public override void StartGame()
+    public Intro AnimationManager;
+    void Start()
     {
         gameOverPanel.SetActive(false);
-        LoadQuestion(currentLevelIndex);
-    }
 
+        LoadQuestion(currentQuestionIndex);
+    }
     IEnumerator LoadQuestionCoroutine(int questionIndex)
     {
         if (questionIndex < questions.Count)
         {
             Question currentQuestion = questions[questionIndex];
+
             questionImageField.sprite = currentQuestion.questionImage;
             questionDisplay.DisplayQuestion(currentQuestion.questionText);
 
+            // Ждем завершения анимации текста
             yield return new WaitUntil(() => questionDisplay.typeCoroutine == null);
+
 
             for (int i = 0; i < answerButtons.Length; i++)
             {
@@ -68,16 +78,23 @@ public class QuizManager : BaseGameManager
         {
             answerButtons[i].gameObject.SetActive(false);
         }
+
         StartCoroutine(LoadQuestionCoroutine(questionIndex));
+
+
     }
+
+
 
     void AnswerButtonClicked(int answerIndex)
     {
-        if (answerIndex == questions[currentLevelIndex].correctAnswerIndex)
+        if (answerIndex == questions[currentQuestionIndex].correctAnswerIndex)
         {
-            currentLevelIndex++;
+            currentQuestionIndex++;
+
             NextPanel.SetActive(true);
-            CorrectTextUI.text = questions[currentLevelIndex - 1].explanationTextCorrect;
+            CorrectTextUI.text = questions[currentQuestionIndex - 1].explanationTextCorrect;
+
         }
         else
         {
@@ -85,36 +102,32 @@ public class QuizManager : BaseGameManager
         }
     }
 
+
     public void NextPanelLoad()
     {
         NextPanel.SetActive(false);
-        if (currentLevelIndex >= questions.Count)
+        if (currentQuestionIndex >= questions.Count)
         {
             AnimationManager.PlaySequence("SecondLevelTrans");
-            HandleLevelCompletion();
+            BackgroundMusic.Stop();
+
         }
         else
         {
-            LoadQuestion(currentLevelIndex);
+            LoadQuestion(currentQuestionIndex);
         }
     }
 
-    public override void GameOver()
+    void GameOver()
     {
-        isGameOver = true;
         gameOverPanel.SetActive(true);
-        explanationTextUI.text = questions[currentLevelIndex].explanationText;
+        explanationTextUI.text = questions[currentQuestionIndex].explanationText;
     }
 
-    public override void RestartGame()
+    public void RestartGame()
     {
-        ResetGameState();
         gameOverPanel.SetActive(false);
-        LoadQuestion(currentLevelIndex);
-    }
-
-    public override void MoveToNextLevel()
-    {
-        NextPanelLoad();
+        currentQuestionIndex = 0;
+        LoadQuestion(currentQuestionIndex);
     }
 }
