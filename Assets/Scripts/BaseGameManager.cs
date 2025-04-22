@@ -4,12 +4,12 @@ using UnityEngine;
 
 public abstract class BaseGameManager : MonoBehaviour
 {
-    // Общие поля для всех мини-игр
-    public Intro AnimationManager;
-    public AudioSource BackgroundMusic;
+    public int currentLevelIndex { get; protected set; } = 0;
+    public bool isGameOver { get; protected set; } = false;
 
-    protected int currentLevelIndex = 0;
-    protected bool isGameOver = false;
+    // Общие ссылки
+    public Intro sequenceManager;
+    public AudioSource backgroundMusic;
 
     // Общие методы
     public abstract void StartGame();
@@ -17,18 +17,20 @@ public abstract class BaseGameManager : MonoBehaviour
     public abstract void RestartGame();
     public abstract void GameOver();
 
-    protected virtual void HandleLevelCompletion()
+    // Общие вспомогательные методы
+    protected virtual void PlaySequence(string sequenceName)
     {
-        // Общая логика при завершении уровня
-        if (BackgroundMusic != null)
+        if (sequenceManager != null)
         {
-            BackgroundMusic.Stop();
+            sequenceManager.PlaySequence(sequenceName);
         }
     }
 
-    protected virtual void ResetGameState()
+    protected virtual void StopBackgroundMusic()
     {
-        currentLevelIndex = 0;
-        isGameOver = false;
+        if (backgroundMusic != null)
+        {
+            backgroundMusic.Stop();
+        }
     }
 }
