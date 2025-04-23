@@ -4,33 +4,46 @@ using UnityEngine;
 
 public abstract class BaseGameManager : MonoBehaviour
 {
-    public int currentLevelIndex { get; protected set; } = 0;
-    public bool isGameOver { get; protected set; } = false;
+    [SerializeField] protected GameObject winPanel;
+    [SerializeField] protected string sequenceAfterGame;
 
-    // Общие ссылки
-    public Intro sequenceManager;
-    public AudioSource backgroundMusic;
-
-    // Общие методы
-    public abstract void StartGame();
-    public abstract void MoveToNextLevel();
-    public abstract void RestartGame();
-    public abstract void GameOver();
-
-    // Общие вспомогательные методы
-    protected virtual void PlaySequence(string sequenceName)
+ 
+    protected void HandleCompletion(int currentIndex, int totalCount, System.Action loadNextAction)
     {
-        if (sequenceManager != null)
+        if (winPanel != null)
         {
-            sequenceManager.PlaySequence(sequenceName);
+            winPanel.SetActive(false);
+        }
+
+        if (currentIndex >= totalCount)
+        {
+            PlaySequence(sequenceAfterGame);
+        }
+        else
+        {
+            loadNextAction?.Invoke();
         }
     }
 
-    protected virtual void StopBackgroundMusic()
+    protected void MoveToNext(int currentLevel, int totalLevels, System.Action updateLevelAction)
     {
-        if (backgroundMusic != null)
+        if (currentLevel < totalLevels - 1)
         {
-            backgroundMusic.Stop();
+            updateLevelAction?.Invoke();
+        }
+        else
+        {
+            Debug.Log("The end");
+            PlaySequence(sequenceAfterGame);
+        }
+    }
+
+    protected virtual void PlaySequence(string sequenceName)
+    {
+
+        if (!string.IsNullOrEmpty(sequenceName))
+        {
+            Debug.Log($"Playing sequence: {sequenceName}");
         }
     }
 }

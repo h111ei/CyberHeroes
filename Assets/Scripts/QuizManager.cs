@@ -2,86 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 
-[System.Serializable]
-public class QuizQuestion
-{
-    public string questionText;
-    public Sprite questionImage;
-    public string[] answers;
-    public int correctAnswerIndex;
-    public string explanationText;
-    public string explanationTextCorrect;
-}
 
 public class QuizManager : BaseGameManager
 {
-    [Header("Quiz Settings")]
-    public List<QuizQuestion> questions;
-    public QuestionDisplay questionDisplay;
+    [System.Serializable]
+    public class Question
+    {
+        public string questionText;
+        public Sprite questionImage;
+        public string[] answers;
+        public int correctAnswerIndex;
+        public string explanationText;
+        public string explanationTextCorrect;
+    }
 
-    [Header("UI References")]
+    public List<Question> questions;
+    
+    private int currentQuestionIndex = 0;
+
     public Image questionImageField;
     public Button[] answerButtons;
-    public GameObject gameOverPanel;
-    public TextMeshProUGUI explanationTextUI;
-    public TextMeshProUGUI correctTextUI;
-    public GameObject nextPanel;
+    public GameObject losePanel;
     public GameObject winPanel;
-    public Image anotherBlackPanel;
+    public QuestionDisplay question;
 
-    [Header("Audio")]
-    public AudioSource hi;
-    public AudioClip brass;
+    public Intro AnimationManager;
+    public string SequenceAfterGame = "SecondLevelTrans";
 
-    public override void StartGame()
+
+    void Start()
     {
-        currentLevelIndex = 0;
-        isGameOver = false;
-        gameOverPanel.SetActive(false);
-        LoadQuestion(currentLevelIndex);
+        losePanel.SetActive(false);
+        LoadQuestion(currentQuestionIndex);
     }
-
-    public override void MoveToNextLevel()
-    {
-        nextPanel.SetActive(false);
-        if (currentLevelIndex >= questions.Count)
-        {
-            PlaySequence("SecondLevelTrans");
-            StopBackgroundMusic();
-        }
-        else
-        {
-            LoadQuestion(currentLevelIndex);
-        }
-    }
-
-    public override void RestartGame()
-    {
-        gameOverPanel.SetActive(false);
-        currentLevelIndex = 0;
-        LoadQuestion(currentLevelIndex);
-    }
-
-    public override void GameOver()
-    {
-        isGameOver = true;
-        gameOverPanel.SetActive(true);
-        explanationTextUI.text = questions[currentLevelIndex].explanationText;
-    }
-
-    private IEnumerator LoadQuestionCoroutine(int questionIndex)
+    IEnumerator LoadQuestionCoroutine(int questionIndex)
     {
         if (questionIndex < questions.Count)
         {
-            QuizQuestion currentQuestion = questions[questionIndex];
+            Question currentQuestion = questions[questionIndex];
 
             questionImageField.sprite = currentQuestion.questionImage;
-            questionDisplay.DisplayQuestion(currentQuestion.questionText);
+            question.DisplayQuestion(currentQuestion.questionText);
 
-            yield return new WaitUntil(() => questionDisplay.typeCoroutine == null);
+            // Ждем завершения анимации текста
+            yield return new WaitUntil(() => question.typeCoroutine == null);
+
 
             for (int i = 0; i < answerButtons.Length; i++)
             {
@@ -94,26 +63,52 @@ public class QuizManager : BaseGameManager
         }
     }
 
-    private void LoadQuestion(int questionIndex)
+    void LoadQuestion(int questionIndex)
     {
         for (int i = 0; i < answerButtons.Length; i++)
         {
             answerButtons[i].gameObject.SetActive(false);
         }
+
         StartCoroutine(LoadQuestionCoroutine(questionIndex));
+
+
     }
 
-    private void AnswerButtonClicked(int answerIndex)
+
+
+    void AnswerButtonClicked(int answerIndex)
     {
-        if (answerIndex == questions[currentLevelIndex].correctAnswerIndex)
+        if (answerIndex == questions[currentQuestionIndex].correctAnswerIndex)
         {
-            currentLevelIndex++;
-            nextPanel.SetActive(true);
-            correctTextUI.text = questions[currentLevelIndex - 1].explanationTextCorrect;
+            currentQuestionIndex++;
+
+            winPanel.SetActive(true);
+            winPanel.GetComponentInChildren<TextMeshProUGUI>().text = questions[currentQuestionIndex - 1].explanationTextCorrect;
+
         }
         else
         {
             GameOver();
         }
+    }
+
+
+    public void WinPanelLoad()
+    {
+        HandleCompletion(currentQuestionIndex, questions.Count, () => LoadQuestion(currentQuestionIndex));
+    }
+
+    void GameOver()
+    {
+        losePanel.SetActive(true);
+        losePanel.GetComponentInChildren<TextMeshProUGUI>().text = questions[currentQuestionIndex].explanationText;
+    }
+
+    public void RestartGame()
+    {
+        losePanel.SetActive(false);
+        currentQuestionIndex = 0;
+        LoadQuestion(currentQuestionIndex);
     }
 }
