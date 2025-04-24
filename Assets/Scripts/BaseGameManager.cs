@@ -6,8 +6,9 @@ public abstract class BaseGameManager : MonoBehaviour
 {
     [SerializeField] protected GameObject winPanel;
     [SerializeField] protected string sequenceAfterGame;
+    [SerializeField] protected Intro AnimationManager;
 
- 
+
     protected void HandleCompletion(int currentIndex, int totalCount, System.Action loadNextAction)
     {
         if (winPanel != null)
@@ -17,7 +18,7 @@ public abstract class BaseGameManager : MonoBehaviour
 
         if (currentIndex >= totalCount)
         {
-            PlaySequence(sequenceAfterGame);
+            AnimationManager.PlaySequence(sequenceAfterGame);
         }
         else
         {
@@ -34,16 +35,8 @@ public abstract class BaseGameManager : MonoBehaviour
         else
         {
             Debug.Log("The end");
-            PlaySequence(sequenceAfterGame);
+            AnimationManager.PlaySequence(sequenceAfterGame);
         }
     }
 
-    protected virtual void PlaySequence(string sequenceName)
-    {
-
-        if (!string.IsNullOrEmpty(sequenceName))
-        {
-            Debug.Log($"Playing sequence: {sequenceName}");
-        }
-    }
 }

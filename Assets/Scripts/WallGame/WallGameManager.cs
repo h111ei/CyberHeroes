@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
-public class WallGameManager : MonoBehaviour
+public class WallGameManager : BaseGameManager
 {
     public static WallGameManager Instance { get; private set; }
-    public Intro Sequence;
 
     [System.Serializable]
     public class LevelSettings
@@ -32,7 +31,6 @@ public class WallGameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            InitializeDropZones();
             UpdateLevelImage();
             ActivateCurrentLevelDropZones();
         }
@@ -40,11 +38,6 @@ public class WallGameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    private void InitializeDropZones()
-    {
-
     }
 
     private void ActivateCurrentLevelDropZones()
@@ -61,18 +54,13 @@ public class WallGameManager : MonoBehaviour
 
     public void MoveToNextLevel()
     {
-        if (_currentLevel < _levels.Length - 1)
+        MoveToNext(_currentLevel, _levels.Length, () =>
         {
             _currentLevel++;
             UpdateLevelImage();
             ActivateCurrentLevelDropZones();
             UpdateAllPanelsText();
-        }
-        else
-        {
-            Debug.Log("The end");
-            Sequence.PlaySequence("TosecondRobot");
-        }
+        });
     }
 
     private void UpdateLevelImage()

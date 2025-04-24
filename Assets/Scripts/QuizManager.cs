@@ -27,11 +27,8 @@ public class QuizManager : BaseGameManager
     public Image questionImageField;
     public Button[] answerButtons;
     public GameObject losePanel;
-    public GameObject winPanel;
     public QuestionDisplay question;
 
-    public Intro AnimationManager;
-    public string SequenceAfterGame = "SecondLevelTrans";
 
 
     void Start()

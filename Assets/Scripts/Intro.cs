@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+
 public class Intro : MonoBehaviour
 {
     [System.Serializable]
@@ -95,6 +96,8 @@ public class Intro : MonoBehaviour
     {
         InitializeIntroAnimation();
     }
+
+
 
     private void InitializeIntroAnimation()
     {
