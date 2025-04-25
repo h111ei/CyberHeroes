@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-
 public class Intro : MonoBehaviour
 {
     [System.Serializable]
@@ -33,19 +32,17 @@ public class Intro : MonoBehaviour
     {
         public enum OverrideType
         {
-            ModifyExisting, 
-            InsertAfter,    
-            InsertBefore,   
-            Append          
+            ModifyExisting,
+            InsertAfter,
+            InsertBefore,
+            Append
         }
 
         public OverrideType overrideType = OverrideType.ModifyExisting;
-        public int stepIndex; 
-        public AnimationStep overriddenStep; 
+        public int stepIndex;
+        public AnimationStep overriddenStep;
     }
 
-
-    
     [System.Serializable]
     public class AnimationStep
     {
@@ -87,17 +84,57 @@ public class Intro : MonoBehaviour
     [Header("UI Elements")]
     public RectTransform blackScreen;
     public RectTransform introLogo;
-    public GameObject[] virusObjects;
-    public Image alertImage;
 
     private Dictionary<string, Sequence> activeSequences = new Dictionary<string, Sequence>();
+    private string currentSequenceName;
+    private bool isSequencePlaying = false;
 
     private void Start()
     {
         InitializeIntroAnimation();
     }
 
+    private void Update()
+    {
+        // Check for left mouse button click to skip animation
+        if (Input.GetMouseButtonDown(0) && isSequencePlaying) // 0 is the left mouse button
+        {
+            Debug.Log("mister hi");
+            SkipCurrentAnimation();
+        }
+    }
 
+    private void SkipCurrentAnimation()
+    {
+        if (!isSequencePlaying || string.IsNullOrEmpty(currentSequenceName))
+            return;
+
+        // ≈сли текуща€ анимаци€ - Virus или RedAlert, переходим сразу к DownloadAntiVirus
+        if (currentSequenceName == "Virus" || currentSequenceName == "RedAlert")
+        {
+            StartDownloadingAntiVirus();
+            return;
+        }
+
+        // ќригинальна€ логика пропуска дл€ других анимаций
+        if (activeSequences.TryGetValue(currentSequenceName, out var sequence))
+        {
+            sequence.Complete(true);
+            activeSequences.Remove(currentSequenceName);
+        }
+
+        AnimationSequence currentSequence = sequences.Find(s => s.name == currentSequenceName);
+        if (currentSequence == null)
+            return;
+
+        AnimationStep loadSequenceStep = GetStepsForSequence(currentSequence)
+            .LastOrDefault(step => step.type == AnimationStep.StepType.LoadSequence);
+
+        if (loadSequenceStep != null && !string.IsNullOrEmpty(loadSequenceStep.targetSequenceName))
+        {
+            PlaySequence(loadSequenceStep.targetSequenceName);
+        }
+    }
 
     private void InitializeIntroAnimation()
     {
@@ -113,7 +150,6 @@ public class Intro : MonoBehaviour
         });
     }
 
-    // Calculate maximum scale to fit object within screen
     private float CalculateMaxScale(RectTransform target)
     {
         float screenWidth = Screen.width;
@@ -135,6 +171,9 @@ public class Intro : MonoBehaviour
 
         AnimationSequence sequence = sequences.Find(s => s.name == sequenceName);
         if (sequence == null) return;
+
+        currentSequenceName = sequenceName;
+        isSequencePlaying = true;
 
         List<AnimationStep> stepsToPlay = GetStepsForSequence(sequence);
 
@@ -201,6 +240,12 @@ public class Intro : MonoBehaviour
         {
             newSequence.SetLoops(-1, sequence.loopType);
         }
+        else
+        {
+            newSequence.OnComplete(() => {
+                isSequencePlaying = false;
+            });
+        }
 
         activeSequences.Add(sequenceName, newSequence);
     }
@@ -220,7 +265,6 @@ public class Intro : MonoBehaviour
             Debug.LogWarning($"Template {sequence.basedOnTemplate} not found for sequence {sequence.name}");
             return new List<AnimationStep>(sequence.steps);
         }
-
 
         List<AnimationStep> resultSteps = new List<AnimationStep>();
         foreach (var step in template.steps)
@@ -292,8 +336,10 @@ public class Intro : MonoBehaviour
         {
             sequence.Kill();
             activeSequences.Remove(sequenceName);
+            isSequencePlaying = false;
         }
     }
+
     private void ApplyStepOverride(AnimationStep original, AnimationStep overrides)
     {
         if (overrides.targetObject != null) original.targetObject = overrides.targetObject;
@@ -305,10 +351,12 @@ public class Intro : MonoBehaviour
         if (overrides.customCallback != null) original.customCallback = overrides.customCallback;
         if (!string.IsNullOrEmpty(overrides.targetSequenceName)) original.targetSequenceName = overrides.targetSequenceName;
     }
+
     public void StartDownloadingAntiVirus()
     {
         StopSequence("RedAlert");
         StopSequence("Virus");
+        currentSequenceName = "DownloadAntiVirus";
         PlaySequence("DownloadAntiVirus");
     }
 
