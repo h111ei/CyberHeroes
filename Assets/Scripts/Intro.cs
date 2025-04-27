@@ -89,6 +89,9 @@ public class Intro : MonoBehaviour
     private string currentSequenceName;
     private bool isSequencePlaying = false;
 
+    public TextMeshProUGUI SkipText;
+    private bool _isSkipped = false;
+
     private void Start()
     {
         InitializeIntroAnimation();
@@ -99,8 +102,13 @@ public class Intro : MonoBehaviour
         // Check for left mouse button click to skip animation
         if (Input.GetMouseButtonDown(0) && isSequencePlaying) // 0 is the left mouse button
         {
-            Debug.Log("mister hi");
             SkipCurrentAnimation();
+
+            if (!_isSkipped)
+            {
+                SkipText.gameObject.SetActive(false);
+                _isSkipped = true;
+            }
         }
     }
 
