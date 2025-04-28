@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DisableTip : MonoBehaviour
+public class Disable : MonoBehaviour
 {
     public void OnDisable()
     {

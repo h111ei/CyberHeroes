@@ -9,7 +9,7 @@ public abstract class BaseGameManager : MonoBehaviour
     [SerializeField] protected Intro AnimationManager;
 
 
-    protected void HandleCompletion(int currentIndex, int totalCount, System.Action loadNextAction)
+    protected void HandleCompletion(int currentIndex, int totalCount, System.Action loadNextAction, bool isLevelTransition = false)
     {
         if (winPanel != null)
         {
@@ -22,21 +22,26 @@ public abstract class BaseGameManager : MonoBehaviour
         }
         else
         {
-            loadNextAction?.Invoke();
+            if (isLevelTransition)
+            {
+                // Для перехода между уровнями используем оригинальную логику
+                if (currentIndex < totalCount - 1)
+                {
+                    loadNextAction?.Invoke();
+                }
+                else
+                {
+                    Debug.Log("The end");
+                    AnimationManager.PlaySequence(sequenceAfterGame);
+                }
+            }
+            else
+            {
+                // Для обычных случаев (как WinPanelLoad)
+                loadNextAction?.Invoke();
+            }
         }
     }
 
-    protected void MoveToNext(int currentLevel, int totalLevels, System.Action updateLevelAction)
-    {
-        if (currentLevel < totalLevels - 1)
-        {
-            updateLevelAction?.Invoke();
-        }
-        else
-        {
-            Debug.Log("The end");
-            AnimationManager.PlaySequence(sequenceAfterGame);
-        }
-    }
 
 }

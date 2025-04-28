@@ -52,15 +52,21 @@ public class WallGameManager : BaseGameManager
         }
     }
 
+    // Измененные методы, которые наследуются
     public void MoveToNextLevel()
     {
-        MoveToNext(_currentLevel, _levels.Length, () =>
-        {
-            _currentLevel++;
-            UpdateLevelImage();
-            ActivateCurrentLevelDropZones();
-            UpdateAllPanelsText();
-        });
+        HandleCompletion(
+            _currentLevel,
+            _levels.Length,
+            () =>
+            {
+                _currentLevel++;
+                UpdateLevelImage();
+                ActivateCurrentLevelDropZones();
+                UpdateAllPanelsText();
+            },
+            true // Указываем, что это переход между уровнями
+        );
     }
 
     private void UpdateLevelImage()

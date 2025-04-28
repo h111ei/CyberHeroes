@@ -93,7 +93,11 @@ public class QuizManager : BaseGameManager
 
     public void WinPanelLoad()
     {
-        HandleCompletion(currentQuestionIndex, questions.Count, () => LoadQuestion(currentQuestionIndex));
+        HandleCompletion(
+            currentQuestionIndex,
+            questions.Count,
+            () => LoadQuestion(currentQuestionIndex)
+        );
     }
 
     void GameOver()
