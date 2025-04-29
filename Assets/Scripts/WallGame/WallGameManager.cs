@@ -52,7 +52,7 @@ public class WallGameManager : BaseGameManager
         }
     }
 
-    // Измененные методы, которые наследуются
+    
     public void MoveToNextLevel()
     {
         HandleCompletion(
@@ -65,7 +65,7 @@ public class WallGameManager : BaseGameManager
                 ActivateCurrentLevelDropZones();
                 UpdateAllPanelsText();
             },
-            true // Указываем, что это переход между уровнями
+            false
         );
     }
 
@@ -105,7 +105,6 @@ public class WallGameManager : BaseGameManager
 
     private void UpdateAllPanelsText()
     {
-        // Находим все панели на сцене
         DragAndDropController[] allPanels = FindObjectsOfType<DragAndDropController>();
         foreach (var panel in allPanels)
         {

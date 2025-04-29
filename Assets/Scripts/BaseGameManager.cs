@@ -11,10 +11,7 @@ public abstract class BaseGameManager : MonoBehaviour
 
     protected void HandleCompletion(int currentIndex, int totalCount, System.Action loadNextAction, bool isLevelTransition = false)
     {
-        if (winPanel != null)
-        {
-            winPanel.SetActive(false);
-        }
+        
 
         if (currentIndex >= totalCount)
         {
@@ -37,7 +34,6 @@ public abstract class BaseGameManager : MonoBehaviour
             }
             else
             {
-                // Для обычных случаев (как WinPanelLoad)
                 loadNextAction?.Invoke();
             }
         }
