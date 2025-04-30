@@ -29,7 +29,7 @@ public class QuizManager : BaseGameManager
     public GameObject losePanel;
     public QuestionDisplay question;
 
-
+    public GameObject winPanel;
 
     void Start()
     {
@@ -96,7 +96,15 @@ public class QuizManager : BaseGameManager
         HandleCompletion(
             currentQuestionIndex,
             questions.Count,
-            () => LoadQuestion(currentQuestionIndex)
+            () => LoadQuestion(currentQuestionIndex),
+            false,
+            () =>
+            {
+                if (winPanel != null)
+                {   
+                    winPanel.SetActive(false);
+                }
+            }
         );
     }
 

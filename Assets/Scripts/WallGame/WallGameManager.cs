@@ -57,7 +57,7 @@ public class WallGameManager : BaseGameManager
     {
         HandleCompletion(
             _currentLevel,
-            _levels.Length,
+            _levels.Length-1,
             () =>
             {
                 _currentLevel++;
