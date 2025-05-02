@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public abstract class BaseGameManager : MonoBehaviour
 {
     [SerializeField] protected string sequenceAfterGame;
@@ -36,10 +36,5 @@ public abstract class BaseGameManager : MonoBehaviour
             }
         }
     }
-
-
-
-
-
 
 }

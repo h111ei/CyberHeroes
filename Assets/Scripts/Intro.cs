@@ -90,15 +90,69 @@ public class Intro : MonoBehaviour
     private bool isSequencePlaying = false;
 
     public TextMeshProUGUI SkipText;
-    private void Start()
+
+    [Header("Animation Toggles")]
+    public List<AnimationToggle> animationToggles;
+
+    [System.Serializable]
+    public class AnimationToggle
     {
-        InitializeIntroAnimation();
+        public string toggleName;
+        public GameObject targetObject;
+        public bool defaultState;
+        [Tooltip("Optional sequence to play when toggling")]
+        public string sequenceToPlay;
     }
 
+    private Dictionary<string, bool> toggleStates = new Dictionary<string, bool>();
+
+    private void Start()
+    {
+        InitializeToggleStates();
+        InitializeIntroAnimation();
+    }
+    private void InitializeToggleStates()
+    {
+        foreach (var toggle in animationToggles)
+        {
+            toggleStates[toggle.toggleName] = toggle.defaultState;
+            if (toggle.targetObject != null)
+            {
+                toggle.targetObject.SetActive(toggle.defaultState);
+            }
+        }
+    }
+    public void ToggleAnimation(string toggleName, bool? setTo = null)
+    {
+        if (!toggleStates.ContainsKey(toggleName))
+        {
+            Debug.LogWarning($"Toggle {toggleName} not found!");
+            return;
+        }
+
+        // Определяем новое состояние
+        bool newState = setTo.HasValue ? setTo.Value : !toggleStates[toggleName];
+        toggleStates[toggleName] = newState;
+
+        // Находим соответствующий toggle
+        var toggle = animationToggles.Find(t => t.toggleName == toggleName);
+        if (toggle == null) return;
+
+        // Устанавливаем состояние объекта
+        if (toggle.targetObject != null)
+        {
+            toggle.targetObject.SetActive(newState);
+        }
+
+        // Запускаем последовательность, если нужно
+        if (!string.IsNullOrEmpty(toggle.sequenceToPlay))
+        {
+            PlaySequence(toggle.sequenceToPlay);
+        }
+    }
     private void Update()
     {
-        // Check for left mouse button click to skip animation
-        if (Input.GetMouseButtonDown(0) && isSequencePlaying) // 0 is the left mouse button
+        if (Input.GetMouseButtonDown(0) && isSequencePlaying)
         {
             SkipCurrentAnimation();
         }
@@ -109,14 +163,12 @@ public class Intro : MonoBehaviour
         if (!isSequencePlaying || string.IsNullOrEmpty(currentSequenceName))
             return;
 
-        // Если текущая анимация - Virus или RedAlert, переходим сразу к DownloadAntiVirus
         if (currentSequenceName == "Virus" || currentSequenceName == "RedAlert")
         {
             StartDownloadingAntiVirus();
             return;
         }
 
-        // Оригинальная логика пропуска для других анимаций
         if (activeSequences.TryGetValue(currentSequenceName, out var sequence))
         {
             sequence.Complete(true);

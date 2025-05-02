@@ -10,7 +10,7 @@ public class QuestionDisplay : MonoBehaviour
     private TextMeshProUGUI questionTextField;
     public float typeSpeed = 0.05f;
     private string fullQuestionText;
-    public Coroutine typeCoroutine; // сопрограмма
+    public Coroutine typeCoroutine; 
 
     private void Start()
     {
@@ -19,7 +19,7 @@ public class QuestionDisplay : MonoBehaviour
     public void DisplayQuestion(string questionText)
     {
         fullQuestionText = questionText;
-        // Остановить предыдущую сопрограмму, если она запущена
+        // Stop the previous animation if it's running.
         if (typeCoroutine != null)
         {
             StopCoroutine(typeCoroutine);

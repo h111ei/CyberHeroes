@@ -21,17 +21,15 @@ public class Shake : MonoBehaviour
 
     private void ShakeContinuously()
     {
-        // Останавливаем предыдущую последовательность, если она есть
         StopShake();
 
         shakeSequence = DOTween.Sequence();
-
-        // Устанавливаем ссылку на объект для автоматического уничтожения твина
+        // Object reference for automatic tween cleanup.
         shakeSequence.SetLink(gameObject);
 
         for (int i = 0; i < shakeVibrato; i++)
         {
-            if (!this || !transform) return; // Проверка на уничтожение объекта
+            if (!this || !transform) return;
 
             Vector3 randomDirection = Random.insideUnitSphere.normalized * shakeStrength;
             Vector3 targetPosition = startPosition + randomDirection;
@@ -41,7 +39,6 @@ public class Shake : MonoBehaviour
                 .SetEase(Ease.InOutSine));
         }
 
-        // Проверка перед добавлением завершающего движения
         if (this && transform)
         {
             shakeSequence.Append(transform
@@ -73,7 +70,6 @@ public class Shake : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Не пытаемся останавливать твины при выходе из приложения
         if (!isQuitting)
         {
             StopShake();

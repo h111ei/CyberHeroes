@@ -21,7 +21,7 @@ public class QuizManager : BaseGameManager
     }
 
     public List<Question> questions;
-    
+
     private int currentQuestionIndex = 0;
 
     public Image questionImageField;
@@ -45,7 +45,7 @@ public class QuizManager : BaseGameManager
             questionImageField.sprite = currentQuestion.questionImage;
             question.DisplayQuestion(currentQuestion.questionText);
 
-            // Ждем завершения анимации текста
+
             yield return new WaitUntil(() => question.typeCoroutine == null);
 
 
@@ -71,8 +71,6 @@ public class QuizManager : BaseGameManager
 
 
     }
-
-
 
     void AnswerButtonClicked(int answerIndex)
     {
@@ -101,7 +99,7 @@ public class QuizManager : BaseGameManager
             () =>
             {
                 if (winPanel != null)
-                {   
+                {
                     winPanel.SetActive(false);
                 }
             }

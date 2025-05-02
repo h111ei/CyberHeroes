@@ -39,13 +39,12 @@ public class HorizontalImageScroller : MonoBehaviour
 
     void InitializeScrollSnap()
     {
-        // Очистка существующих элементов
+        // Clean up existing elements
         foreach (Transform child in scrollSnap.Content)
         {
             Destroy(child.gameObject);
         }
 
-        // Создание новых элементов из префаба
         foreach (var file in filesData)
         {
             CreateFileElement(file);
@@ -63,11 +62,9 @@ public class HorizontalImageScroller : MonoBehaviour
             return null;
         }
 
-        // Создаем экземпляр префаба
         GameObject fileObject = Instantiate(panelPrefab, scrollSnap.Content);
         fileObject.name = "File";
 
-        // Настройка Image
         Image img = fileObject.GetComponentInChildren<Image>();
 
         if (img != null)
@@ -77,7 +74,6 @@ public class HorizontalImageScroller : MonoBehaviour
             img.color = Color.white;
         }
 
-        // Находим TextMeshProUGUI в дочерних объектах
         TextMeshProUGUI tmpText = fileObject.GetComponentInChildren<TextMeshProUGUI>();
         if (tmpText != null)
         {
@@ -87,8 +83,6 @@ public class HorizontalImageScroller : MonoBehaviour
             tmpText.alignment = TextAlignmentOptions.Center;
             tmpText.enableWordWrapping = true;
         }
-
-        // Настройка RectTransform (если нужно)
         RectTransform rt = fileObject.GetComponent<RectTransform>();
         if (rt != null)
         {
@@ -130,7 +124,7 @@ public class HorizontalImageScroller : MonoBehaviour
     }
 
 
-    //исправить в будущем
+    //CHANGE IN FUTURE!!
     public void CloseErrorPanel()
     {
         ErrorPanel.gameObject.SetActive(false);
@@ -151,7 +145,7 @@ public class HorizontalImageScroller : MonoBehaviour
     {
         isDeleting = true;
 
-        // Сохраняем ссылки на компоненты перед анимацией
+        // Save component references before animating
         TextMeshProUGUI tmpText = fileToDelete.GetComponentInChildren<TextMeshProUGUI>();
         string originalText = tmpText != null ? tmpText.text : "";
 
@@ -160,21 +154,19 @@ public class HorizontalImageScroller : MonoBehaviour
             tmpText.text = "<color=#ff0000>Удаление...</color>";
         }
 
-        // Получаем все графические компоненты
         Graphic[] graphics = fileToDelete.GetComponentsInChildren<Graphic>();
         Color[] originalColors = graphics.Select(g => g.color).ToArray();
         Vector3 originalScale = fileToDelete.localScale;
 
-        // Анимация
+        // Animation
         float elapsed = 0f;
         while (elapsed < deleteAnimationDuration)
         {
             float progress = elapsed / deleteAnimationDuration;
 
-            // Масштабирование
             fileToDelete.localScale = Vector3.Lerp(originalScale, Vector3.zero, progress);
 
-            // Изменение прозрачности
+            // Change of transparancy
             for (int i = 0; i < graphics.Length; i++)
             {
                 if (graphics[i] != null)
@@ -189,13 +181,10 @@ public class HorizontalImageScroller : MonoBehaviour
             yield return null;
         }
 
-        // Удаление из данных
+        // Deleting of Data
         filesData = filesData.Where((_, i) => i != index).ToArray();
 
-        // Удаление из ScrollSnap
         scrollSnap.Remove(index);
-
-        // Проверка победы
         if (filesData.All(f => !f.shouldBeDeleted))
         {
             Debug.Log("Победа! Все опасные файлы удалены!");

@@ -21,7 +21,7 @@ public class CanvasAnimationUtils
         Rect rect = blackScreen.rect;
         Vector2 screenSize = new Vector2(rect.width, rect.height);
 
-        // –ассчитываем смещение, достаточное чтобы увести панель за пределы экрана
+        //Offset large enough to move the panel off-screen.
         Vector2 offset = new Vector2(
             screenSize.x * direction.x,
             screenSize.y * direction.y
