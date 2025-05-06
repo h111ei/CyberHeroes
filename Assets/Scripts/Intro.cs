@@ -50,6 +50,7 @@ public class Intro : MonoBehaviour
         {
             ActivateObject,
             DeactivateObject,
+            StopSequence,
             Move,
             Scale,
             Fade,
@@ -130,21 +131,17 @@ public class Intro : MonoBehaviour
             return;
         }
 
-        // Определяем новое состояние
         bool newState = setTo.HasValue ? setTo.Value : !toggleStates[toggleName];
         toggleStates[toggleName] = newState;
 
-        // Находим соответствующий toggle
         var toggle = animationToggles.Find(t => t.toggleName == toggleName);
         if (toggle == null) return;
 
-        // Устанавливаем состояние объекта
         if (toggle.targetObject != null)
         {
             toggle.targetObject.SetActive(newState);
         }
 
-        // Запускаем последовательность, если нужно
         if (!string.IsNullOrEmpty(toggle.sequenceToPlay))
         {
             PlaySequence(toggle.sequenceToPlay);
@@ -241,6 +238,18 @@ public class Intro : MonoBehaviour
 
                 case AnimationStep.StepType.DeactivateObject:
                     newSequence.AppendCallback(() => step.targetObject.SetActive(false));
+                    break;
+
+                case AnimationStep.StepType.StopSequence:
+                    newSequence.AppendCallback(() => {
+                        if (activeSequences.TryGetValue(sequenceName, out var seq))
+                        {
+                            seq.Kill();
+                            activeSequences.Remove(sequenceName);
+                        }
+                        isSequencePlaying = false;
+                        currentSequenceName = null;
+                    });
                     break;
 
                 case AnimationStep.StepType.Move:

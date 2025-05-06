@@ -1962,7 +1962,29 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
       targetSequenceName: 
+    - type: 2
+      targetObject: {fileID: 1896503287}
+      targetValue: {x: 1, y: 1, z: 0}
+      duration: 0
+      easeType: 0
+      soundClip: {fileID: 0}
+      soundVolume: 0
+      customCallback:
+        m_PersistentCalls:
+          m_Calls: []
+      targetSequenceName: 
     - type: 1
+      targetObject: {fileID: 825942013}
+      targetValue: {x: 0.6, y: 0, z: 0}
+      duration: 1
+      easeType: 0
+      soundClip: {fileID: 0}
+      soundVolume: 0
+      customCallback:
+        m_PersistentCalls:
+          m_Calls: []
+      targetSequenceName: 
+    - type: 2
       targetObject: {fileID: 825942013}
       targetValue: {x: 0.6, y: 0, z: 0}
       duration: 1
