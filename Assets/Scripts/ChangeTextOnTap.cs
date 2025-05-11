@@ -59,8 +59,8 @@ public class ChangeTextOnTap : MonoBehaviour
 
     private void ShowCurrentLine()
     {
-            myText.GetComponent<QuestionDisplay>().DisplayQuestion(
-            dialogueBlocks[currentBlockIndex].lines[currentLineIndex]);
+         myText.GetComponent<QuestionDisplay>().DisplayQuestion(
+         dialogueBlocks[currentBlockIndex].lines[currentLineIndex]);
     }
 
     private void Update()

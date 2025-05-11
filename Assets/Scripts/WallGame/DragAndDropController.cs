@@ -15,7 +15,6 @@ public class DragAndDropController : MonoBehaviour, IBeginDragHandler, IDragHand
     [SerializeField] private float _fadeDuration = 0.3f;
 
     private RectTransform _rectTransform;
-    private Canvas _canvas;
     private CanvasGroup _canvasGroup;
     private bool _isLocked = false;
     private Vector2 _dragOffset;
@@ -24,7 +23,6 @@ public class DragAndDropController : MonoBehaviour, IBeginDragHandler, IDragHand
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
-        _canvas = GetComponentInParent<Canvas>();
         _canvasGroup = GetComponent<CanvasGroup>();
         _textComponent = GetComponentInChildren<TextMeshProUGUI>();
 

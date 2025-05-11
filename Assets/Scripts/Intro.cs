@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -50,14 +49,14 @@ public class Intro : MonoBehaviour
         {
             ActivateObject,
             DeactivateObject,
-            StopSequence,
             Move,
             Scale,
             Fade,
             PlaySound,
             Delay,
             Callback,
-            LoadSequence
+            LoadSequence,
+            StopSequence
         }
 
         public StepType type;
@@ -70,6 +69,9 @@ public class Intro : MonoBehaviour
         public UnityEvent customCallback;
         public string targetSequenceName;
     }
+
+
+    [SerializeField] private string FirstSequenceName = "IntroSequence";
 
     [Header("Templates")]
     public List<AnimationTemplate> templates;
@@ -90,125 +92,20 @@ public class Intro : MonoBehaviour
     private string currentSequenceName;
     private bool isSequencePlaying = false;
 
-    public TextMeshProUGUI SkipText;
-
-    [Header("Animation Toggles")]
-    public List<AnimationToggle> animationToggles;
-
-    [System.Serializable]
-    public class AnimationToggle
-    {
-        public string toggleName;
-        public GameObject targetObject;
-        public bool defaultState;
-        [Tooltip("Optional sequence to play when toggling")]
-        public string sequenceToPlay;
-    }
-
-    private Dictionary<string, bool> toggleStates = new Dictionary<string, bool>();
 
     private void Start()
     {
-        InitializeToggleStates();
         InitializeIntroAnimation();
     }
-    private void InitializeToggleStates()
-    {
-        foreach (var toggle in animationToggles)
-        {
-            toggleStates[toggle.toggleName] = toggle.defaultState;
-            if (toggle.targetObject != null)
-            {
-                toggle.targetObject.SetActive(toggle.defaultState);
-            }
-        }
-    }
-    public void ToggleAnimation(string toggleName, bool? setTo = null)
-    {
-        if (!toggleStates.ContainsKey(toggleName))
-        {
-            Debug.LogWarning($"Toggle {toggleName} not found!");
-            return;
-        }
-
-        bool newState = setTo.HasValue ? setTo.Value : !toggleStates[toggleName];
-        toggleStates[toggleName] = newState;
-
-        var toggle = animationToggles.Find(t => t.toggleName == toggleName);
-        if (toggle == null) return;
-
-        if (toggle.targetObject != null)
-        {
-            toggle.targetObject.SetActive(newState);
-        }
-
-        if (!string.IsNullOrEmpty(toggle.sequenceToPlay))
-        {
-            PlaySequence(toggle.sequenceToPlay);
-        }
-    }
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0) && isSequencePlaying)
-        {
-            SkipCurrentAnimation();
-        }
-    }
-
-    private void SkipCurrentAnimation()
-    {
-        if (!isSequencePlaying || string.IsNullOrEmpty(currentSequenceName))
-            return;
-
-        if (currentSequenceName == "Virus" || currentSequenceName == "RedAlert")
-        {
-            StartDownloadingAntiVirus();
-            return;
-        }
-
-        if (activeSequences.TryGetValue(currentSequenceName, out var sequence))
-        {
-            sequence.Complete(true);
-            activeSequences.Remove(currentSequenceName);
-        }
-
-        AnimationSequence currentSequence = sequences.Find(s => s.name == currentSequenceName);
-        if (currentSequence == null)
-            return;
-
-        AnimationStep loadSequenceStep = GetStepsForSequence(currentSequence)
-            .LastOrDefault(step => step.type == AnimationStep.StepType.LoadSequence);
-
-        if (loadSequenceStep != null && !string.IsNullOrEmpty(loadSequenceStep.targetSequenceName))
-        {
-            PlaySequence(loadSequenceStep.targetSequenceName);
-        }
-    }
-
     private void InitializeIntroAnimation()
     {
-        float maxScale = CalculateMaxScale(introLogo);
-        Vector2 targetPosition = CanvasAnimationUtils.GetOffscreenPosition(
-            blackScreen,
-            Vector2.right
-        );
-
-        CanvasAnimationUtils.AnimateCanvasBlackScreen(blackScreen, targetPosition, 2f, () =>
+        CanvasAnimationUtils.AnimateCanvasBlackScreen(blackScreen, CanvasAnimationUtils.GetOffscreenPosition(blackScreen, Vector2.right), 2f, () =>
         {
-            PlaySequence("IntroSequence");
+            PlaySequence(FirstSequenceName);
         });
     }
 
-    private float CalculateMaxScale(RectTransform target)
-    {
-        float screenWidth = Screen.width;
-        float screenHeight = Screen.height;
-        Vector2 objectSize = target.sizeDelta;
 
-        float maxScaleX = screenWidth / objectSize.x;
-        float maxScaleY = screenHeight / objectSize.y;
-        return Mathf.Min(maxScaleX, maxScaleY);
-    }
 
     public void PlaySequence(string sequenceName)
     {
@@ -242,13 +139,7 @@ public class Intro : MonoBehaviour
 
                 case AnimationStep.StepType.StopSequence:
                     newSequence.AppendCallback(() => {
-                        if (activeSequences.TryGetValue(sequenceName, out var seq))
-                        {
-                            seq.Kill();
-                            activeSequences.Remove(sequenceName);
-                        }
-                        isSequencePlaying = false;
-                        currentSequenceName = null;
+                        StopSequence(step.targetSequenceName);
                     });
                     break;
 
@@ -411,23 +302,5 @@ public class Intro : MonoBehaviour
         if (overrides.soundVolume != 1f) original.soundVolume = overrides.soundVolume;
         if (overrides.customCallback != null) original.customCallback = overrides.customCallback;
         if (!string.IsNullOrEmpty(overrides.targetSequenceName)) original.targetSequenceName = overrides.targetSequenceName;
-    }
-
-    public void StartDownloadingAntiVirus()
-    {
-        StopSequence("RedAlert");
-        StopSequence("Virus");
-        currentSequenceName = "DownloadAntiVirus";
-        PlaySequence("DownloadAntiVirus");
-    }
-
-    public void StartTutorial()
-    {
-        PlaySequence("RobotTutorial");
-    }
-
-    public void StartGameSequence()
-    {
-        PlaySequence("GameStart");
     }
 }

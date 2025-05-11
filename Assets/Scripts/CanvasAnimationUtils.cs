@@ -29,4 +29,16 @@ public class CanvasAnimationUtils
 
         return blackScreen.anchoredPosition + offset;
     }
+
+
+    public static float CalculateMaxScale(RectTransform target)
+    {
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+        Vector2 objectSize = target.sizeDelta;
+
+        float maxScaleX = screenWidth / objectSize.x;
+        float maxScaleY = screenHeight / objectSize.y;
+        return Mathf.Min(maxScaleX, maxScaleY);
+    }
 }

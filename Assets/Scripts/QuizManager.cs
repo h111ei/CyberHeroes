@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.Events;
 
 
 public class QuizManager : BaseGameManager
@@ -29,8 +30,8 @@ public class QuizManager : BaseGameManager
     public GameObject losePanel;
     public QuestionDisplay question;
 
-    public GameObject winPanel;
-
+    public GameObject correctPanel;
+    public Button correctPanelButton;
     void Start()
     {
         losePanel.SetActive(false);
@@ -78,8 +79,24 @@ public class QuizManager : BaseGameManager
         {
             currentQuestionIndex++;
 
-            winPanel.SetActive(true);
-            winPanel.GetComponentInChildren<TextMeshProUGUI>().text = questions[currentQuestionIndex - 1].explanationTextCorrect;
+            correctPanel.SetActive(true);
+            correctPanel.GetComponentInChildren<TextMeshProUGUI>().text = questions[currentQuestionIndex - 1].explanationTextCorrect;
+            correctPanelButton.onClick.AddListener(() =>
+            {
+                HandleCompletion(
+                    currentQuestionIndex,
+                    questions.Count,
+                    () => LoadQuestion(currentQuestionIndex),
+                    false,
+                    () =>
+                    {
+                        if (correctPanel != null)
+                        {
+                            correctPanel.SetActive(false);
+                        }
+                    }
+                );
+            });
 
         }
         else
@@ -88,23 +105,6 @@ public class QuizManager : BaseGameManager
         }
     }
 
-
-    public void WinPanelLoad()
-    {
-        HandleCompletion(
-            currentQuestionIndex,
-            questions.Count,
-            () => LoadQuestion(currentQuestionIndex),
-            false,
-            () =>
-            {
-                if (winPanel != null)
-                {
-                    winPanel.SetActive(false);
-                }
-            }
-        );
-    }
 
     void GameOver()
     {

@@ -1,13 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DanielLochner.Assets.SimpleScrollSnap;
 using System.Linq;
 using TMPro;
 
-public class HorizontalImageScroller : MonoBehaviour
+public class HorizontalImageScroller : BaseGameManager
 {
     [System.Serializable]
     public class FileData
@@ -24,13 +22,14 @@ public class HorizontalImageScroller : MonoBehaviour
     public FileData[] filesData;
 
     private bool isDeleting = false;
-    private int correctDeletions = 0;
     private int incorrectDeletions = 0;
     private Coroutine currentDeletionCoroutine;
 
     public GameObject ErrorPanel;
     public GameObject WinPanel;
-    public Intro Sequence;
+
+    public Button FinishGameButton;
+
     void Start()
     {
         InitializeScrollSnap();
@@ -111,10 +110,6 @@ public class HorizontalImageScroller : MonoBehaviour
             ErrorPanel.gameObject.SetActive(true);
 
         }
-        else if (shouldDelete)
-        {
-            correctDeletions++;
-        }
 
         if (currentDeletionCoroutine != null)
         {
@@ -128,11 +123,6 @@ public class HorizontalImageScroller : MonoBehaviour
     public void CloseErrorPanel()
     {
         ErrorPanel.gameObject.SetActive(false);
-    }
-
-    public void PlaySequence()
-    {
-        Sequence.PlaySequence("Ending");
     }
 
     bool CheckForKeywords(string text)
@@ -187,8 +177,8 @@ public class HorizontalImageScroller : MonoBehaviour
         scrollSnap.Remove(index);
         if (filesData.All(f => !f.shouldBeDeleted))
         {
-            Debug.Log("Победа! Все опасные файлы удалены!");
             WinPanel.SetActive(true);
+            FinishGameButton.onClick.AddListener(PlaySequence);
             deleteButton.interactable = false;
         }
 
