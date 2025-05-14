@@ -105,6 +105,44 @@ public class Intro : MonoBehaviour
         });
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && isSequencePlaying && GameManager.isDevMode)
+        {
+            SkipCurrentAnimation();
+        }
+    }
+
+    private void SkipCurrentAnimation()
+    {
+        if (!isSequencePlaying || string.IsNullOrEmpty(currentSequenceName))
+            return;
+
+        if (currentSequenceName == "Virus" || currentSequenceName == "RedAlert")
+        {
+            PlaySequence("DownloadAntiVirus");
+            return;
+        }
+
+        if (activeSequences.TryGetValue(currentSequenceName, out var sequence))
+        {
+            sequence.Complete(true);
+            activeSequences.Remove(currentSequenceName);
+        }
+
+        AnimationSequence currentSequence = sequences.Find(s => s.name == currentSequenceName);
+        if (currentSequence == null)
+            return;
+
+        AnimationStep loadSequenceStep = GetStepsForSequence(currentSequence)
+            .LastOrDefault(step => step.type == AnimationStep.StepType.LoadSequence);
+
+        if (loadSequenceStep != null && !string.IsNullOrEmpty(loadSequenceStep.targetSequenceName))
+        {
+            PlaySequence(loadSequenceStep.targetSequenceName);
+        }
+    }
+
 
 
     public void PlaySequence(string sequenceName)
