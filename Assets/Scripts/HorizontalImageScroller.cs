@@ -20,6 +20,7 @@ public class HorizontalImageScroller : BaseGameManager
     public float deleteAnimationDuration = 0.5f;
     public GameObject panelPrefab;
     public FileData[] filesData;
+    public float paddingSize = 200f; // Размер отступов по краям
 
     private bool isDeleting = false;
     private int incorrectDeletions = 0;
@@ -27,7 +28,6 @@ public class HorizontalImageScroller : BaseGameManager
 
     public GameObject ErrorPanel;
     public GameObject WinPanel;
-
     public Button FinishGameButton;
 
     void Start()
@@ -35,7 +35,7 @@ public class HorizontalImageScroller : BaseGameManager
         InitializeScrollSnap();
         deleteButton.onClick.AddListener(DeleteCurrentFile);
     }
-
+    
     void InitializeScrollSnap()
     {
         // Clean up existing elements
@@ -44,14 +44,47 @@ public class HorizontalImageScroller : BaseGameManager
             Destroy(child.gameObject);
         }
 
+        // Создаем левый отступ
+        CreatePaddingElement(paddingSize);
+
+        // Создаем основные элементы
         foreach (var file in filesData)
         {
             CreateFileElement(file);
         }
 
-        scrollSnap.Setup();
-    }
+        // Создаем правый отступ
+        CreatePaddingElement(paddingSize);
 
+        scrollSnap.Setup();
+
+        // Добавляем задержку перед установкой позиции
+        StartCoroutine(SetInitialPosition());
+    }
+    IEnumerator SetInitialPosition()
+    {
+        // Ждем завершения кадра, чтобы все элементы успели инициализироваться
+        yield return new WaitForEndOfFrame();
+
+        // Устанавливаем начальную позицию на первый реальный элемент (индекс 1, так как 0 - это отступ)
+        scrollSnap.GoToPanel(1);
+
+        // Альтернативный вариант - центрировать вручную
+        // scrollSnap.Content.anchoredPosition = new Vector2(-(paddingSize + 150), 0);
+    }
+    void CreatePaddingElement(float width)
+    {
+        GameObject padding = new GameObject("Padding", typeof(RectTransform));
+        padding.transform.SetParent(scrollSnap.Content);
+
+        RectTransform rt = padding.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(width, 0);
+        rt.localScale = Vector3.one;
+
+        // Отключаем Raycast Target чтобы не мешал взаимодействию
+        CanvasRenderer cr = padding.AddComponent<CanvasRenderer>();
+        cr.cullTransparentMesh = true;
+    }
 
     GameObject CreateFileElement(FileData file)
     {
@@ -65,12 +98,16 @@ public class HorizontalImageScroller : BaseGameManager
         fileObject.name = "File";
 
         Image img = fileObject.GetComponentInChildren<Image>();
-
         if (img != null)
         {
             img.sprite = file.image;
             img.preserveAspect = true;
             img.color = Color.white;
+        }
+        else
+        {
+            img.sprite = null;
+            Debug.Log("Hi");
         }
 
         TextMeshProUGUI tmpText = fileObject.GetComponentInChildren<TextMeshProUGUI>();
@@ -82,6 +119,7 @@ public class HorizontalImageScroller : BaseGameManager
             tmpText.alignment = TextAlignmentOptions.Center;
             tmpText.enableWordWrapping = true;
         }
+
         RectTransform rt = fileObject.GetComponent<RectTransform>();
         if (rt != null)
         {
@@ -93,12 +131,14 @@ public class HorizontalImageScroller : BaseGameManager
 
     public void DeleteCurrentFile()
     {
+
         if (isDeleting || scrollSnap.Panels.Length == 0) return;
 
-        int currentIndex = scrollSnap.CenteredPanel;
-        if (currentIndex < 0 || currentIndex >= scrollSnap.Panels.Length) return;
+        // Учитываем что первый элемент - это отступ
+        int currentIndex = scrollSnap.CenteredPanel - 1;
+        if (currentIndex < 0 || currentIndex >= filesData.Length) return;
 
-        RectTransform fileToDelete = scrollSnap.Panels[currentIndex];
+        RectTransform fileToDelete = scrollSnap.Panels[currentIndex + 1]; // +1 потому что первый элемент отступ
         FileData currentFileData = filesData[currentIndex];
 
         bool shouldDelete = CheckForKeywords(currentFileData.text);
@@ -108,7 +148,7 @@ public class HorizontalImageScroller : BaseGameManager
             incorrectDeletions++;
             Debug.Log("Ошибка! Неправильное удаление. Ошибок: " + incorrectDeletions);
             ErrorPanel.gameObject.SetActive(true);
-
+            return;
         }
 
         if (currentDeletionCoroutine != null)
@@ -118,8 +158,6 @@ public class HorizontalImageScroller : BaseGameManager
         currentDeletionCoroutine = StartCoroutine(DeleteWithAnimation(fileToDelete, currentIndex, shouldDelete));
     }
 
-
-    //CHANGE IN FUTURE!!
     public void CloseErrorPanel()
     {
         ErrorPanel.gameObject.SetActive(false);
@@ -135,7 +173,6 @@ public class HorizontalImageScroller : BaseGameManager
     {
         isDeleting = true;
 
-        // Save component references before animating
         TextMeshProUGUI tmpText = fileToDelete.GetComponentInChildren<TextMeshProUGUI>();
         string originalText = tmpText != null ? tmpText.text : "";
 
@@ -148,7 +185,6 @@ public class HorizontalImageScroller : BaseGameManager
         Color[] originalColors = graphics.Select(g => g.color).ToArray();
         Vector3 originalScale = fileToDelete.localScale;
 
-        // Animation
         float elapsed = 0f;
         while (elapsed < deleteAnimationDuration)
         {
@@ -156,7 +192,6 @@ public class HorizontalImageScroller : BaseGameManager
 
             fileToDelete.localScale = Vector3.Lerp(originalScale, Vector3.zero, progress);
 
-            // Change of transparancy
             for (int i = 0; i < graphics.Length; i++)
             {
                 if (graphics[i] != null)
@@ -171,10 +206,13 @@ public class HorizontalImageScroller : BaseGameManager
             yield return null;
         }
 
-        // Deleting of Data
+        // Удаляем данные и обновляем массив
         filesData = filesData.Where((_, i) => i != index).ToArray();
 
-        scrollSnap.Remove(index);
+        // Удаляем элемент из scrollSnap (учитываем что первый элемент - отступ)
+        scrollSnap.Remove(index + 1);
+
+        // Проверяем условие победы
         if (filesData.All(f => !f.shouldBeDeleted))
         {
             WinPanel.SetActive(true);
